@@ -1,0 +1,146 @@
+.search-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin: 0 auto;
+  margin-top: -20px;
+  width: 97vw;
+  label {
+    font-size: 2rem;
+    text-align: center;
+    height: 2.5rem;
+    min-height: 2.5rem;
+    transition: all 0.2s ease-in;
+  }
+  .no-error {
+    position: relative;
+    font-size: 0.8rem;
+  }
+  .error-msg {
+    width: 600px;
+    font-size: 1.2rem;
+    position: relative;
+    top: 0.8rem;
+    z-index: 999;
+    color: rgba(256, 44, 49, 0.9);
+    font-weight: bold;
+    font-family: monospace;
+    height: 1px;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 2.5rem;
+      min-height: 2.5rem;
+      width: 100%;
+      box-shadow: 80px 120px 59px rgba(0, 0, 0, 0.9);
+      border-radius: 100%;
+      transform: translate(-3%, -303%);
+    }
+  }
+  .loader {
+    margin: 0 auto;
+    bottom: 40%;
+    position: absolute;
+    left: 30%;
+  }
+  .no-selection {
+    text-align: center;
+    font-size: xx-large;
+    font-family: fantasy;
+    margin-top: 50px;
+
+    img {
+      height: 270px;
+    }
+
+    .MuiInputBase-input,
+    .MuiInput-underline:before,
+    input:-internal-autofill-selected {
+      padding: 20px !important;
+      font-size: 1.8rem !important;
+
+      height: 9rem;
+    }
+  }
+  .results-container {
+    width: 100vw;
+    padding: 1rem;
+  }
+  .MuiInputBase-input:-webkit-autofill {
+    background-color: transparent !important;
+    color: white !important;
+  }
+  .MuiInputBase-input,
+  .MuiInput-underline:before,
+  input:-internal-autofill-selected {
+    background-color: transparent !important;
+    opacity: 5;
+    color: white !important;
+  }
+  .MuiInputBase-input,
+  .MuiInputBase-root {
+    background-color: black !important;
+    padding: 4px 0px 4px 15px !important;
+  }
+
+  .MuiInputAdornment-positionEnd {
+    margin-left: 0 !important;
+  }
+  .MuiIconButton-edgeEnd {
+    width: 88px;
+  }
+  .no-results {
+    text-align: center;
+    font-size: 4rem;
+    opacity: 0.4;
+  }
+}
+.database-switch{
+  display: flex;
+  p{
+    margin: .5rem -.1rem;
+  }
+}
+@media screen and (min-width: 800px) {
+  .search-container {
+    label {
+      font-size: 3rem;
+      text-align: center;
+      height: 2.5rem;
+      min-height: 2.5rem;
+      transition: all 0.2s ease-in;
+    }
+    .no-error {
+      position: relative;
+      font-size: 0.8rem;
+    }
+    .error-msg {
+      font-size: 2.5rem;
+      width: 900px;
+      top: 0.2rem;
+    }
+    .loader {
+      left: 40%;
+    }
+
+    .MuiInputBase-input,
+    .MuiInput-underline:before,
+    input:-internal-autofill-selected {
+      padding: 20px !important;
+      font-size: 3rem !important;
+      height: 5rem;
+    }
+    .no-selection {
+      img {
+        height: 500px;
+      }
+    }
+  }
+
+  .MuiIconButton-edgeEnd {
+    margin-right: 15px !important;
+  }
+}

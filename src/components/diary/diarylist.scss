@@ -1,0 +1,53 @@
+.diary-wrapper{
+    width: 100vw;
+    background: black;
+    &-background{
+        position: relative;
+        background-image: url('./Lined-Paper.svg');
+        background-position: top;
+        background-repeat: no-repeat;
+        background-size: cover;
+        transition: all 0.9s ease-out;
+        height: 100vh;
+        transform: scale(.9);        
+        display: block;
+    }
+        &-content{
+            position: absolute;
+            font-size: 2rem;
+    
+            top: 10%;
+            left: 20%;
+            transform: translate(-10%,-10%);
+            ul{
+                display: flex;
+                flex-direction: column;
+                li{
+                    span{
+                        padding: 10px;
+                    }
+                }
+            }
+        }
+   
+     .nutrients{
+         height: 22px;
+         padding: 5px;
+         span{
+            display: inline-flex;
+            width: 531pxpx;
+            height: 0px;
+            font-size: 1.4rem;
+            padding: 0 10px;
+            margin: 0;
+         }
+     }
+    .diary-wrapper-content{
+        height: 90vh;
+        overflow-y: scroll;
+    }
+  
+}
+ 
+ 
+

@@ -1,0 +1,17 @@
+.action-btns{
+    display: flex;
+    background: black;
+ 
+    position: absolute;
+    top: 0;
+    right: .5rem;
+    a{
+        padding: 1.5rem .7rem 0 .7rem;
+        img{
+        
+        &:hover{
+            cursor: pointer;
+        }
+    }
+}
+}

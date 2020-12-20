@@ -1,0 +1,90 @@
+$brad-orange: #ffb347;
+
+.book-container {
+  height: 800px;
+  background: black;
+  width: 100%;
+   
+  nav {
+    height: 50px;
+  }
+  .content {
+    height: 600px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .book-form {
+      height: 500px;
+      width: 80%;
+
+      ul {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        li {
+          background: black;
+          padding: 15px 39px;
+          margin: 0 20px;
+
+          color: white;
+          div {
+            width: 235px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.brad-quote-btn {
+  border: solid 0.5px;
+  width: 400px;
+  margin: 100px auto;
+  text-align: center;
+  p {
+    font-size: 2rem;
+    color: $brad-orange;
+  }
+}
+label {
+  color: $brad-orange;
+  font-size: 1.1rem;
+  display: block;
+}
+.select {
+  color: white;
+  width: 300px;
+}
+.MuiSelect-icon {
+  color: $brad-orange !important;
+  width: 87px !important;
+  top: -13px !important;
+  right: -18px !important;
+  height: auto !important;
+}
+.MuiInput-underline:after , .MuiInput-underline:before{
+  border: solid 2px $brad-orange !important;
+}
+.MuiInputBase-input,
+.MuiInput-underline:before {
+  color: white !important;
+  font-size: 28px !important;
+  padding: 25px 0px 6px 4px !important;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  color: rgba(0, 0, 0, 0);
+  opacity: 1;
+  display: block;
+  background: url("./date_range-white-18dp.svg") no-repeat;
+  width: 40px;
+  height: 40px;
+  border-width: thin;
+
+  padding: 6px 5px;
+}
+input[type="time"]::-webkit-calendar-picker-indicator {
+  background: url("./access_time-white-18dp.svg") no-repeat;
+}

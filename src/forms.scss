@@ -1,0 +1,56 @@
+$main-color: #ffb347;
+
+label {
+  color: $main-color;
+  font-size: 1.1rem;
+  display: block;
+}
+.select {
+  color: white;
+  width: 300px;
+}
+.MuiSelect-icon {
+  color: $main-color !important;
+  width: 87px !important;
+  top: -13px !important;
+  right: -18px !important;
+  height: auto !important;
+}
+.MuiInput-underline:after,
+.MuiInput-underline:before {
+  border: solid 2px $main-color !important;
+ 
+}
+
+.MuiInputBase-input,
+.MuiInput-underline:before {
+  color: white !important;
+  font-size: 28px !important;
+  padding: 25px 0px 6px 4px !important;
+}
+ 
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  color: rgba(0, 0, 0, 0);
+  opacity: 1;
+  display: block;
+  background: url("./date_range-white-18dp.svg") no-repeat;
+  width: 40px;
+  height: 40px;
+  border-width: thin;
+
+  padding: 6px 5px;
+}
+input[type="time"]::-webkit-calendar-picker-indicator {
+  background: url("./access_time-white-18dp.svg") no-repeat;
+}
+
+.MuiInputBase-input, .MuiInput-underline:before , input:-internal-autofill-selected  {
+    background-color: transparent !important;
+    color: white !important;
+}
+input:-webkit-autofill {
+    background-color: #FAFFBD !important;
+   
+}
+ 

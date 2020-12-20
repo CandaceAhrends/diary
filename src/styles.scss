@@ -1,0 +1,22 @@
+html, body{
+   overflow-x: hidden;
+   padding: 0;
+   margin: 0
+}
+body{
+   background: black;
+   color: white;
+}
+a{
+   text-decoration: none;
+}
+li{
+   list-style: none;
+}
+.hide{
+   visibility: hidden;
+}
+.show{
+   visibility: visible;
+}
+
