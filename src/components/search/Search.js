@@ -99,9 +99,21 @@ export default function Search({ url, search }) {
             setErrorMessage(foodList.errorMessage);
 
           } else {
-            console.log("getting fat secret food list", foodList);
+            const foodListSort = (a,b)=>{
+              const descA = a.food_name || '';
+              const descB = b.food_name || '';             
 
-            setSearchResults(foodList);
+                if(descA.indexOf(searchQuery) < 3){
+                  return -1;
+                }
+                else if(descB.indexOf(searchQuery) < 3){
+                  return 0;
+                }
+                return 1;
+            }
+            const sorted = foodList.sort( foodListSort );
+       
+            setSearchResults(sorted);
           }
           setLoading(false);
           //food$.unsubscribe();

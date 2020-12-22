@@ -39,48 +39,55 @@ export default function DataList({ data, useFatSecret }) {
   const [expandables, setExpandables] = useState(null);
   const [foodList, setFoodList] = useState(null);
   const [selectedPortion, setSelecedPortion] = useState({});
-  const [selectedServing, setSelectedServing] = useState(null);
 
   useEffect(() => {
     const expandables = data.reduce((expandables, foodItem) => {
       expandables[foodItem.food_id] =
-        {
-          expanded: false,
-          details: {},
-          isFetched: false
-        }
+      {
+        expanded: false,
+        details: {},
+        isFetched: false,
+        fetching: false,
+        selectedPortion: null
+      }
       return expandables;
-    },{});
+    }, {});
     setExpandables(expandables);
     setFoodList(data);
 
   }, data);
- 
 
-  const toggleExpanded = (expandedItem)=>{
-     expandedItem.expanded = !expandedItem.expanded;
-     setExpandables({ ...expandables});
+
+  const toggleExpanded = (expandedItem) => {
+    expandedItem.expanded = !expandedItem.expanded;
+    setExpandables({ ...expandables });
   }
 
-  const onSelectedPortion = portion=>setSelecedPortion(portion);
+  const onSelectedPortion = (portion, foodId) => {
+    expandables[foodId].selectedPortion = portion;
+
+    setExpandables({ ...expandables });
+  }
   const onExpandDetails = ({ food_id }) => {
 
 
     if (state.isAuthenticated) {
-      const expandedItem = expandables[food_id];    
-    
+      const expandedItem = expandables[food_id];
+
       if (!expandedItem.expanded && !expandedItem.isFetched) {
-        expandedItem.isFetched = true;
+        expandedItem.fetching = true;
         foodDetail(food_id, useFatSecret).subscribe(details => {
-          if(details.errorMessage){
+          if (details.errorMessage) {
             expandedItem.errorMessage = details.errorMessage;
           }
+          expandedItem.isFetched = true;
+          expandedItem.fetching = false;
           expandedItem.details = { ...details };
           setExpandables({ ...expandables });
 
         });
 
-      } 
+      }
       toggleExpanded(expandedItem);
 
     }
@@ -89,28 +96,26 @@ export default function DataList({ data, useFatSecret }) {
     }
 
   };
-  const onChangeServingSize = selectedServing => {
-    console.log("changing serving", selectedServing);
-    setSelectedServing(selectedServing);
 
-  }
- 
+
   const saveToDiary = foodId => {
 
 
     if (state.isAuthenticated) {
-
-      const diaryItem = {
-        id: foodId,        
-        date: getcurrentDate(),
-        qty: 1,
-        type: useFatSecret?'fs':'usda',
-        userId: state.user,
-        portion: JSON.stringify(selectedPortion)
-      }
-      saveFood(diaryItem).subscribe(res => {
-        console.log(res);
-      });
+      const portion = expandables[foodId].selectedPortion;
+      if (portion) {
+        const diaryItem = {
+          id: foodId,
+          date: getcurrentDate(),
+          qty: 1,
+          type: useFatSecret ? 'fs' : 'usda',
+          userId: state.user,
+          portion: JSON.stringify(portion)
+        }
+        saveFood(diaryItem).subscribe(res => {
+          console.log(res);
+        });
+      } 
     }
     else {
       history.push('/login');
@@ -121,7 +126,7 @@ export default function DataList({ data, useFatSecret }) {
 
   return (
     <>{expandables ? <List className={classes.root}>
-      {foodList.map((food, idx) => {        
+      {foodList.map((food, idx) => {
         return (
           <>
             <ListItem
@@ -129,7 +134,7 @@ export default function DataList({ data, useFatSecret }) {
               dense
               button
               onClick={() => onExpandDetails(food)}
-            >             
+            >
               <img src="arrow-right.svg" className={expandables[food.food_id].expanded ? 'expand' : 'collapse'} />
               <ListItemText
                 id={food.food_id}
@@ -138,24 +143,25 @@ export default function DataList({ data, useFatSecret }) {
                 secondary={`${food.food_description.slice(food.food_description.indexOf('|') + 1)} `}
               />
 
-              {expandables[food.food_id].errorMessage?null:<p className="calorie-badge" onClick={() => saveToDiary(food.food_id)}>
-                <span>{food.food_description.slice(food.food_description.indexOf("-") + 1, selectedServing ? selectedServing.calories : food.food_description.indexOf("kcal"))}</span>
-                <img src="./add.svg"></img>
-                <div className="btn-spinner"> <ClipLoader
+              {expandables[food.food_id].errorMessage ? null :
+                <p className="calorie-badge"
+                  onClick={() => saveToDiary(food.food_id)}>
+                  <img src="./add.svg"></img>
+                  <div className="btn-spinner"> <ClipLoader
 
-                  size={30}
-                  color={"orange"}
-                  loading={false}
-                /></div>
-              </p>}
+                    size={30}
+                    color={"orange"}
+                    loading={expandables[food.food_id].fetching}
+                  /></div>
+                </p>}
 
             </ListItem>
             {/* {useFatSecret?<Details show={expandables[food.food_id].expanded} 
             data={expandables[food.food_id].details} changeServingSize={onChangeServingSize}></Details>: */}
-            {expandables[food.food_id].isFetched?
-              <UsdaDetails errorMessage={expandables[food.food_id].errorMessage} show={expandables[food.food_id].expanded} 
-              data={expandables[food.food_id].details}
-              onSelectedPortion={onSelectedPortion} ></UsdaDetails>:null
+            {expandables[food.food_id].fetching || expandables[food.food_id].isFetched?
+              <UsdaDetails errorMessage={expandables[food.food_id].errorMessage} show={expandables[food.food_id].expanded}
+                data={expandables[food.food_id].details}
+                onSelectedPortion={portion => onSelectedPortion(portion, food.food_id)} ></UsdaDetails> : null
             }
           </>
 
