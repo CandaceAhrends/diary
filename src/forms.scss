@@ -1,7 +1,7 @@
 $main-color: #ffb347;
 
 label {
-  color: $main-color;
+  color: $main-color !important;
   font-size: 1.1rem;
   display: block;
 }

@@ -1,4 +1,5 @@
 html, body{
+   font-family: "roboto";
    overflow-x: hidden;
    padding: 0;
    margin: 0
@@ -20,3 +21,13 @@ li{
    visibility: visible;
 }
 
+.active{
+   width: 100vw;
+   background: black;
+   opacity: 1;
+   transition: width .4s ease-out;
+   div{
+       opacity: 1;
+       transition: opacity 3s ease-out;
+   }
+}

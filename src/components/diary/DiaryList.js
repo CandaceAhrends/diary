@@ -108,7 +108,7 @@ const DiaryList = () => {
                 });
 
                 totals.push({
-                    foodName: nutritionDetails.description,
+                    foodName: `${qty} ${nutritionDetails.description}`,
                     servingDescription: portion.description,
                     ...Object.fromEntries(computedNutrientValues),
                     qty,
@@ -123,8 +123,9 @@ const DiaryList = () => {
                     if (/^\d+\.+\d+$/.test(v)) {
                         summary[k] = summary[k] || 0;
                         summary[k] += (v) * item.qty;
+                    }
+                 else {
 
-                    } else {
                         summary[k] = '';
                     }
                 });
@@ -132,6 +133,7 @@ const DiaryList = () => {
             }, {});
 
             const formattedTotals = Object.entries(totalNutrition).map(([k, v]) => {
+                console.log("k ???", k, v);
                 if (/^\d+\.+\d+$/.test(v)) {
                     const amt = Number(v).toFixed(2);
                     console.log("amt ", amt, k, v);
@@ -174,8 +176,8 @@ const DiaryList = () => {
     const gridOptions = {
         enableSorting: true,
         columnDefs: [
-            { field: 'qty' },
-            { field: 'foodName', headerName: 'Name', width: 400 },
+            // { field: 'qty', width: 10, pinned: 'left' },
+            { field: 'foodName', pinned: 'left', headerName: 'Name', width: 200 },
             { field: 'servingDescription', headerName: 'Portion' },
             { field: 'Energy', headerName: 'Calories' },
             { field: "Caffeine", headerName: 'Caffeine mg' },
@@ -235,7 +237,7 @@ const DiaryList = () => {
               */}
             <button onClick={onClearAll}>CLEAR ALL</button>
 
-            <div className="ag-theme-material" style={{ height: '80vh', width: '100vw' }}>
+            <div className="ag-theme-alpine-dark" style={{ height: '80vh', width: '95vw' }}>
                 <AgGridReact
                     gridOptions={gridOptions}
                     rowData={nutrientTotals}>

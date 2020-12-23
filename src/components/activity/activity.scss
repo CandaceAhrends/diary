@@ -1,0 +1,35 @@
+.btn-group{
+    display: flex;    
+    justify-content: flex-end;
+    width: 80vw;
+    margin: 0px 0px 20px 15px;
+    button{
+        margin: 10px;
+    }
+
+}
+.activity-wraper{
+    margin-top: 2rem;
+}
+.initial-state{
+       
+    
+    opacity: 0; 
+    transition: all 1s ease-out;
+    
+}
+.form-wrapper{  
+   opacity: 1;
+   display: flex;
+   flex-direction: column;
+   width: 100vw;
+   opacity:   .8;
+   align-content: center;
+   justify-content: center;
+   background: black;
+   transition: all 1s ease-out;
+   display: flex;
+   align-items: center;
+  
+}
+ 

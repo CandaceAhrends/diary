@@ -16,7 +16,7 @@ const Actionbuttons = () => {
 
      
       <Link to="/"><img src="search.svg" /></Link>
-      {/* <Link to="/login"><img src="pie-chart.svg" /></Link> */}
+      <Link to="/activity"><img src="pie-chart.svg" /></Link>
       <Link to="/diary"><img src="journal.svg" /></Link>     
       <Link to="/login"><img src="user.svg" /></Link>
 

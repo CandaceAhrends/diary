@@ -10,7 +10,7 @@ import { useHistory } from "react-router-dom";
 import { StoreContext } from "../../AppContext";
 import classNames from 'classnames';
 import PacmanLoader from "react-spinners/PacmanLoader";
-import Switch from '@material-ui/core/Switch';
+//import Switch from '@material-ui/core/Switch';
 
 import "./search.scss";
 
@@ -46,7 +46,7 @@ const searchValidator = (query) => {
   const normalizedQuery = query.replace(/[\u2018\u2019\u201C\u201D]/g, (c) => '\'\'""'.substr('\u2018\u2019\u201C\u201D'.indexOf(c), 1));
   const isValidChar = /^[a-zA-Z0-9‘’'_.-\s]+$/.test(normalizedQuery);
   const isValidLen = normalizedQuery.length >= MIN_CHAR_SIZE;
-
+  
   if (!isValidChar) {
     errorMessage = INVALID_CHAR_ERROR;
   }
@@ -59,60 +59,60 @@ const searchValidator = (query) => {
 
 export default function Search({ url, search }) {
   const history = useHistory();
-  const [state] = useContext(StoreContext);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [state] = useContext(StoreContext);  
+  const [searchQueryEl, setSearchQueryEl] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [showError, setShowError] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [removeError, SetRemoveError] = useState(false);
   const [useFatSecret, setUseFatSecret] = useState(false);
-
   const classes = useStyles();
 
   //const validateSearch = 
   const handleFoodDBChange = ele => {
-
     setUseFatSecret(!useFatSecret);
   }
+
+  const handleChange = ele =>setShowError(false); 
+
   const handleEnter = ele => {
     if ('Enter' === ele.key) {
       handleSearch();
     }
   }
-  const handleChange = (ele) => {
-    setSearchQuery(ele.target.value);
-    setErrorMessage(null);
-  };
-  const handleSearch = () => {
 
+  const handleSearch = () => {
+    
+    const query = searchQueryEl.value;
     if (state.isAuthenticated) {
 
-      SetRemoveError(false);
-      const [errorMessage, normalizedQuery] = searchValidator(searchQuery);
+      const [errorMessage, normalizedQuery] = searchValidator(query);
+
+      setErrorMessage(errorMessage);
 
       if (!errorMessage) {
         setLoading(true);
         setSearchResults([]);
-        const food$ = searchFood(normalizedQuery,useFatSecret).subscribe((foodList) => {
+        const food$ = searchFood(normalizedQuery, useFatSecret).subscribe((foodList) => {
 
           if (foodList.errorMessage) {
             setErrorMessage(foodList.errorMessage);
 
           } else {
-            const foodListSort = (a,b)=>{
+            const foodListSort = (a, b) => {
               const descA = a.food_name || '';
-              const descB = b.food_name || '';             
+              const descB = b.food_name || '';
 
-                if(descA.indexOf(searchQuery) < 3){
-                  return -1;
-                }
-                else if(descB.indexOf(searchQuery) < 3){
-                  return 0;
-                }
-                return 1;
+              if (descA.indexOf(query) < 3) {
+                return -1;
+              }
+              else if (descB.indexOf(query) < 3) {
+                return 0;
+              }
+              return 1;
             }
-            const sorted = foodList.sort( foodListSort );
-       
+            const sorted = foodList.sort(foodListSort);
+
             setSearchResults(sorted);
           }
           setLoading(false);
@@ -120,7 +120,7 @@ export default function Search({ url, search }) {
 
         });
       } else {
-        setErrorMessage(errorMessage);
+        setShowError(true);
       }
     } else {
       history.push('/login');
@@ -128,16 +128,15 @@ export default function Search({ url, search }) {
   };
 
   var errorClasses = classNames({
-    'error-msg': errorMessage,
-    'no-error': !errorMessage,
-    'hide': removeError,
-    'show': !removeError
+    'error-msg': true,
+    'hide': !showError,
+    'show': !showError
   });
 
   return (
     <div className="search-container">
 
-      <label className={errorClasses} onClick={() => SetRemoveError(true)}>{errorMessage}</label>
+      <label className={errorClasses} onClick={() => setShowError(false)}>{errorMessage}</label>
       {/* <Diary></Diary> */}
       <TextField
         autoComplete="off"
@@ -145,7 +144,7 @@ export default function Search({ url, search }) {
         onKeyDown={handleEnter}
         className={classes.search}
         name="search"
-
+        inputRef={el => setSearchQueryEl(el)}
         type="text"
         InputProps={{
           className: classes.input,
@@ -157,26 +156,17 @@ export default function Search({ url, search }) {
           endAdornment: (
             <InputAdornment position="end">
               <IconButton
-
                 onClick={handleSearch}
                 className={classes.iconButton}
                 edge="end"
               >
                 <SearchIcon className={classes.iconSearch}></SearchIcon>
-
               </IconButton>
             </InputAdornment>
           ),
         }}
       />
-      <div className="database-switch"><Switch
-        checked={useFatSecret}
-        onChange={handleFoodDBChange}
-        disabled={true}
-        name="checkedB"
-        color="orange"
-      />{useFatSecret ? <p>Fat Secret</p> : <p>USDA</p>}
-      </div>
+
       <div class="results-container">
         {searchResults.length ? (
           <>
@@ -189,12 +179,9 @@ export default function Search({ url, search }) {
           loading={loading}
         />
         </div>
-      </div>
-      {/* <p className={searchQuery.length && emptyResults ? 'no-results' : 'hide'}>
-        No Results
-      </p> */}
+      </div>      
 
-      <main className={searchQuery.length || searchResults.length ? 'hide' : 'no-selection'}>
+      <main className={!searchQueryEl || searchQueryEl.value.length? 'hide' : 'no-selection'}>
         <img src="book.png" />
         <p>Enter Food or brand name</p>
       </main>

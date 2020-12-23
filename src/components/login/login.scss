@@ -11,15 +11,5 @@
     }
     
 }
-.active{
-    width: 100vw;
-    background: black;
-    opacity: 1;
-    transition: width .4s ease-out;
-    div{
-        opacity: 1;
-        transition: opacity 3s ease-out;
-    }
-}
 
  

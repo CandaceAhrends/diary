@@ -1,6 +1,10 @@
 .diary-wrapper{
     width: 100vw;
+    background: black;    
     background: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     &-background{
         position: relative;
         background-image: url('./Lined-Paper.svg');
