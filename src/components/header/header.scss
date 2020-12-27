@@ -29,14 +29,19 @@ $main-color: #ffb347;
   }
   &::after {
     content: ' ';
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
     background-image: url('./diet.jpg');
     background-position: bottom;
     background-repeat: no-repeat;
     background-size: cover;
-    transition: all 0.9s ease-out;
-    height: 10vh;
-    transform: scale(1.2);
-    
+
+    transition: all .9s ease-out;
+    height: 10px;
+    transform: scale(.5);
+    position: absolute;
   }
 }
 .animated-menu {
@@ -45,19 +50,14 @@ $main-color: #ffb347;
   }
   &::after {
     content: ' ';
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
+    
     opacity: 0.5;
-    position: absolute;
+  
     z-index: -1;
-    background-image: url('./diet.jpg');
     background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    transform: scale(2.5);
-    height: 30vh;
+    transition: all .9s ease-out;
+    transform: scale(1.5);
+    height: 90vh;
   }
 }
 .usda{
@@ -67,20 +67,12 @@ $main-color: #ffb347;
     top: 46px;
     left: 49px;
 }
- 
-.login {
-  background: black;
-  border: solid $main-color;
-  border-radius: 10px;
-  padding: 3px;
- 
-  font-family: monospace;
-  a {
-    color: white;
-    padding: 2px;
-    font-size: 2rem;
-    transition: all 0.2s ease-in;
-  }
+  
+.user{
+  position: absolute;
+  top: 45px;
+  left: .1rem;
+  z-index: 999;
 }
 
 @media screen and (min-width: 800px) {

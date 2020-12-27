@@ -1,9 +1,6 @@
 import React from "react";
 import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
+  NavLink
 } from "react-router-dom";
 import "./actionbutton.scss";
 
@@ -12,13 +9,11 @@ const Actionbuttons = () => {
 
 
   return (
-    <div className="action-btns">
-
-     
-      <Link to="/"><img src="search.svg" /></Link>
-      <Link to="/activity"><img src="pie-chart.svg" /></Link>
-      <Link to="/diary"><img src="journal.svg" /></Link>     
-      <Link to="/login"><img src="user.svg" /></Link>
+    <div className="actions">
+      <NavLink to="/" exact={true} className="actions-link" activeClassName='actions-active' ><img className="png-img" style={{ height: '31px' }} src="home.png" /></NavLink>
+      <NavLink to="/activity" className="actions-link" activeClassName='actions-active'><img className="png-img" src="journal.png" /></NavLink>
+      <NavLink to="/diary" className="actions-link" activeClassName='actions-active'><img className="png-img" style={{ height: '35px' }} src="research.png" /></NavLink>
+      <NavLink to="/login" className="actions-link" activeClassName='actions-active'><img src="user.svg" /></NavLink>
 
     </div>
   );

@@ -1,0 +1,39 @@
+label.error {
+    height: 0.5rem;
+    min-height: 2.5rem;
+    font-size: 0.1rem;
+    
+    text-align: center;
+    padding: 0 0 1rem;
+    visibility: hidden;
+    transform: scale(0);
+    &.show {
+        transform: scale(1);
+        visibility: visible;
+        transition: all 0.3s ease-in-out;
+    }
+    &-msg {
+        top: 0.9rem;
+
+        color: rgba(256, 44, 49, 0.9) !important;
+
+        padding-left: 0.4rem;
+        font-size: 1.2rem;
+        position: relative;
+
+        font-weight: bold;
+
+        &::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 2.5rem;
+            min-height: 2.5rem;
+            width: 100%;
+           
+            border-radius: 100%;
+            transform: translate(-112px, -159px);
+        }
+    }
+}

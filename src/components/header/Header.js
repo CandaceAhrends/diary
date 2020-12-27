@@ -10,19 +10,22 @@ const Header = (props) => {
 
   useEffect(() => {
     const top = document.querySelector(".primary-menu");
-    top.classList.add(ANIMATE_CLASS);
 
+    const animateLoad = setTimeout(() => {
+      top.classList.add(ANIMATE_CLASS);
+    }, 0);
 
     return () => {
-
+      clearTimeout(animateLoad);
     };
-  });
+  }, [state]);
 
   return (
     <>
+     {state.user ? <span className='user'>Welcome  {state.user}</span> : null}
       <nav class="primary-menu">
         <div class="logo">
-          <p>Diet   
+          <p>Diet
             {/* <a href="https://platform.fatsecret.com">
             <img src="https://platform.fatsecret.com/api/static/images/powered_by_fatsecret.svg" border="0" />
           </a> */}
@@ -32,7 +35,7 @@ const Header = (props) => {
 
         </div>
 
-        {state.user ? <span>Logged in as {state.user}</span> : null}
+       
         <div>
           <Actionbuttons></Actionbuttons>
 

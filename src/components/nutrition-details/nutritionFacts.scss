@@ -1,0 +1,65 @@
+.nutrition-facts{
+    width: 94%;
+    padding: 1rem 0;
+    color: #999;
+    &-calories{
+        display: flex;
+        justify-content: space-between;
+        font-size: 1.5rem;
+      
+        padding-bottom: 1rem;
+        margin-bottom: 1rem;
+        border-bottom: rgb(71, 70, 70) solid 1rem;
+    }
+    &-fat{
+        li{
+            width: 25rem;
+            &:first-child{
+                border-bottom:  solid .5px #999;
+                padding-bottom: .3rem;
+                width: 97%;
+            }
+            &:nth-child(2){
+                padding-top: .4rem;
+            }
+            span{
+                &:first-child{
+                    font-weight: bolder;
+                    font-size: 1.2rem;
+                }
+                &:last-child{
+                    margin-left: 1rem;
+                }
+            }
+            &:not(:first-child){
+               
+                span{
+                    margin-left: 1rem;
+                    &:first-child{
+                        
+                        font-size: .9rem;
+                    }
+                }   
+            }
+        }
+    }
+    &-content{
+        li{
+            width: 25rem;
+
+            margin-top: .4rem;
+            &:first-child{
+                border-top:  solid .5px #999;
+                padding-top: 1rem;
+                width: 97%;
+            }
+            span{
+                &:first-child{
+                    font-weight: bolder;
+                    margin-right: 1rem;
+                }
+            }
+            
+        }
+    }
+}

@@ -1,45 +1,64 @@
+@import "../../styles.scss";
+
 .search-container {
   display: flex;
   justify-content: center;
   flex-direction: column;
+  overflow: hidden;
   margin: 0 auto;
   margin-top: -20px;
   width: 97vw;
   label {
-    font-size: 2rem;
-    text-align: center;
-    height: 2.5rem;
+    height: 0.5rem;
     min-height: 2.5rem;
-    transition: all 0.2s ease-in;
+    font-size: 0.1rem;
+    text-align: left;
+
+    visibility: hidden;
+    transform: scale(0);
+    &.show {
+      transform: scale(1);
+      visibility: visible;
+      transition: all 0.3s ease-in-out;
+    }
+    &.error-msg {
+      top: 0.9rem;
+
+      color: rgba(256, 44, 49, 0.9) !important;
+
+      padding-left: 0.4rem;
+      font-size: 1.2rem;
+      position: relative;
+      font-weight: bold;
+
+      &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 2.5rem;
+        min-height: 2.5rem;
+        width: 100%;
+        box-shadow: 6px 151px 27px rgba(140, 195, 177, 0.2);
+        border-radius: 100%;
+        transform: translate(-112px, -159px);
+      }
+    }
+.MuiFormControl-root{
+  .MuiInput-root{
+    .MuiInputBase-input {
+      border: solid;
+    }
+  }
+   
+}
+    
   }
   .no-error {
     position: relative;
     font-size: 0.8rem;
   }
-  .error-msg {
-    width: 600px;
-    font-size: 1.2rem;
-    position: relative;
-    top: 0.8rem;
-    z-index: 999;
-    color: rgba(256, 44, 49, 0.9);
-    font-weight: bold;
-    font-family: monospace;
-    height: 1px;
 
-    &::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 2.5rem;
-      min-height: 2.5rem;
-      width: 100%;
-      box-shadow: 80px 120px 59px rgba(0, 0, 0, 0.9);
-      border-radius: 100%;
-      transform: translate(-3%, -303%);
-    }
-  }
   .loader {
     margin: 0 auto;
     bottom: 40%;
@@ -80,10 +99,10 @@
     opacity: 5;
     color: white !important;
   }
-  .MuiInputBase-input,
+  &:not(.calorie-details-portion-select).MuiInputBase-input,
   .MuiInputBase-root {
-    background-color: black !important;
-    padding: 4px 0px 4px 15px !important;
+    background: rgba(0, 0, 0, 0.5) !important;
+    padding: 0 0px 0px 4px !important;
   }
 
   .MuiInputAdornment-positionEnd {
@@ -98,17 +117,17 @@
     opacity: 0.4;
   }
 }
-.database-switch{
+.database-switch {
   display: flex;
-  p{
-    margin: .5rem -.1rem;
+  p {
+    margin: 0.5rem -0.1rem;
   }
 }
 @media screen and (min-width: 800px) {
   .search-container {
     label {
       font-size: 3rem;
-      text-align: center;
+
       height: 2.5rem;
       min-height: 2.5rem;
       transition: all 0.2s ease-in;

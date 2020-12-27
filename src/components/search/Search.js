@@ -1,15 +1,16 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from "@material-ui/icons/Search";
 import { makeStyles } from "@material-ui/core/styles";
 import searchFood from "../../api/searchFood";
-import DataList from "../datalist/DataList";
+import DataList from "../nutrition-details/DataList";
 import { useHistory } from "react-router-dom";
 import { StoreContext } from "../../AppContext";
 import classNames from 'classnames';
 import PacmanLoader from "react-spinners/PacmanLoader";
+import { inputValidator, stripIphoneQuotes } from "../../utils";
 //import Switch from '@material-ui/core/Switch';
 
 import "./search.scss";
@@ -21,8 +22,10 @@ const useStyles = makeStyles((theme) => ({
     color: "#329AF4",
   },
   iconSearch: {
-    height: 50,
-    width: 50,
+    height: 43,
+    width: 61,
+    padding: '17px'
+ 
   },
   search: {
     borderRadius: 25,
@@ -37,30 +40,17 @@ const useStyles = makeStyles((theme) => ({
   }
 
 }));
-const searchValidator = (query) => {
-  const INVALID_CHAR_ERROR = "Invalid characters used";
-  const INVALID_LEN_ERROR = "Enter at least 3 characters";
-  const MIN_CHAR_SIZE = 3;
 
-  let errorMessage = null;
-  const normalizedQuery = query.replace(/[\u2018\u2019\u201C\u201D]/g, (c) => '\'\'""'.substr('\u2018\u2019\u201C\u201D'.indexOf(c), 1));
-  const isValidChar = /^[a-zA-Z0-9‘’'_.-\s]+$/.test(normalizedQuery);
-  const isValidLen = normalizedQuery.length >= MIN_CHAR_SIZE;
-  
-  if (!isValidChar) {
-    errorMessage = INVALID_CHAR_ERROR;
-  }
-  if (!isValidLen) {
-    errorMessage = INVALID_LEN_ERROR;
-  }
-
-  return [errorMessage, normalizedQuery];
+const SEARCH_ACTION = {
+  type: 'SEARCH'
+}
+const SEARCH_RESULTS_ACTION = {
+  type: 'SEARCH_RESULTS'
 };
-
 export default function Search({ url, search }) {
   const history = useHistory();
-  const [state] = useContext(StoreContext);  
-  const [searchQueryEl, setSearchQueryEl] = useState('');
+  const [state,dispatch] = useContext(StoreContext);  
+  const [searchQueryEl, setSearchQueryEl] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
   const [errorMessage, setErrorMessage] = useState(null);
   const [showError, setShowError] = useState(false);
@@ -68,7 +58,16 @@ export default function Search({ url, search }) {
   const [useFatSecret, setUseFatSecret] = useState(false);
   const classes = useStyles();
 
-  //const validateSearch = 
+
+  useEffect( ()=>{
+    
+    console.log(searchQueryEl)
+    if(searchQueryEl){
+      searchQueryEl.value = state.searchQuery;
+      setSearchResults(state.searchResults);
+    }
+  },searchQueryEl);
+ 
   const handleFoodDBChange = ele => {
     setUseFatSecret(!useFatSecret);
   }
@@ -84,16 +83,22 @@ export default function Search({ url, search }) {
   const handleSearch = () => {
     
     const query = searchQueryEl.value;
+    dispatch({
+      ...SEARCH_ACTION, payload: {
+          searchQuery: query
+      }
+  })
+
     if (state.isAuthenticated) {
 
-      const [errorMessage, normalizedQuery] = searchValidator(query);
+      const errorMessage = inputValidator(query);
 
       setErrorMessage(errorMessage);
 
       if (!errorMessage) {
         setLoading(true);
         setSearchResults([]);
-        const food$ = searchFood(normalizedQuery, useFatSecret).subscribe((foodList) => {
+        const food$ = searchFood(stripIphoneQuotes(query), useFatSecret).subscribe((foodList) => {
 
           if (foodList.errorMessage) {
             setErrorMessage(foodList.errorMessage);
@@ -114,6 +119,13 @@ export default function Search({ url, search }) {
             const sorted = foodList.sort(foodListSort);
 
             setSearchResults(sorted);
+
+            dispatch({
+              ...SEARCH_RESULTS_ACTION, payload: {
+                  searchResults: sorted
+              }});
+
+            
           }
           setLoading(false);
           //food$.unsubscribe();
@@ -130,14 +142,14 @@ export default function Search({ url, search }) {
   var errorClasses = classNames({
     'error-msg': true,
     'hide': !showError,
-    'show': !showError
+    'show': showError
   });
 
   return (
     <div className="search-container">
 
-      <label className={errorClasses} onClick={() => setShowError(false)}>{errorMessage}</label>
-      {/* <Diary></Diary> */}
+      <label className={errorClasses} htmlFor="search" onClick={() => setShowError(false)}>{errorMessage}</label>
+      
       <TextField
         autoComplete="off"
         onChange={handleChange}
@@ -146,6 +158,7 @@ export default function Search({ url, search }) {
         name="search"
         inputRef={el => setSearchQueryEl(el)}
         type="text"
+       
         InputProps={{
           className: classes.input,
           pattern: "^[a-zA-Z0-9_.-]+$",
@@ -181,7 +194,7 @@ export default function Search({ url, search }) {
         </div>
       </div>      
 
-      <main className={!searchQueryEl || searchQueryEl.value.length? 'hide' : 'no-selection'}>
+      <main className={!searchQueryEl || searchQueryEl.value.length? 'hide no-selection' : 'no-selection'}>
         <img src="book.png" />
         <p>Enter Food or brand name</p>
       </main>

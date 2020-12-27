@@ -1,15 +1,46 @@
-.login-wrapper{
-  
-    height: 800px;
-    width: 10px; 
+.login {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    div{
-        opacity: 0;
+    width: 10px;
+    height: 90vh;
+    opacity: 0.8;
+    align-content: center;
+    background: black;
+    transition: all 1s ease-out;
 
+    .MuiOutlinedInput-input {
+        padding: 1.2rem !important;
     }
-    
+
+    &-form {
+        display: flex;
+        flex-direction: column;
+    }
+    .login-container {
+        opacity: 0;
+    }
+    .MuiInput-underline:after,
+    .MuiInput-underline:before {
+        border: none !important;
+    }
+
+    input[name="pwd"] {
+        -webkit-text-security: disc !important;
+    }
 }
 
- 
+.animate-load {
+    width: 100vw;
+    background: black;
+    opacity: 1;
+    transition: width 0.4s ease-out;
+  ;
+    .login-container {
+        opacity: 1;
+        transition: opacity 3s ease-out;
+
+        border-top: 0.5px solid rgba(255, 255, 255, 0.5);
+        padding: 2rem;
+    }
+}

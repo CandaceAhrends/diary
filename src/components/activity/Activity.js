@@ -94,7 +94,7 @@ const Activity = () => {
                 </Typography>
 
                     <TextField
-                        id="outlined-multiline-static"
+                         
                         label="Record an activity, mood, or ailment"
                         multiline
                         rows={5}

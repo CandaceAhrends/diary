@@ -15,6 +15,14 @@
           isAuthenticated: false,
           user: null
         };
+        case "SEARCH": return {
+          ...state,
+          searchQuery: action.payload.searchQuery
+        };
+        case "SEARCH_RESULTS": return {
+          ...state,
+          searchResults: action.payload.searchResults
+        };
       default:
         return state;
     }
