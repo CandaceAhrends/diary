@@ -4,7 +4,7 @@ import { switchMap, map, tap, catchError, reduce } from "rxjs/operators";
 import moment from 'moment';
 //const fatSecretUrl = 'http://localhost:3300/fs/detail?id=';
 const fatSecretUrl = 'http://ec2-54-86-134-25.compute-1.amazonaws.com:3000/fs/detail?id=';
-const usdaUrl = 'http://ec2-54-86-134-25.compute-1.amazonaws.com:3000/usda/detail?id=';
+const usdaUrl = 'http://35.221.47.246:3000/usda/detail?id=';
 //const usdaUrl = 'http://localhost:3300/usda/detail?id=';
 
 

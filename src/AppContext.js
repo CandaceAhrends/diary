@@ -6,7 +6,8 @@ export const initialState = {
     isAuthenticated: false,
     user: null,
     searchQuery: '',
-    searchResults: []
+    searchResults: [],
+    diaryToday: []
 
 };
 export const Auth = TokenStore.getInstance();

@@ -1,3 +1,5 @@
+@import "../../styles.scss";
+
 .login {
     display: flex;
     flex-direction: column;
@@ -32,6 +34,7 @@
 
 .animate-load {
     width: 100vw;
+    height: 100vh;
     background: black;
     opacity: 1;
     transition: width 0.4s ease-out;

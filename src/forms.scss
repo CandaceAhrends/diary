@@ -1,11 +1,11 @@
-$main-color: #ffb347;
+@import "./styles.scss";
 
 label {
-  color: $main-color !important;
+  color: rgba($main-color, 0.9) !important;
   font-size: 1.1rem;
   display: block;
 }
- 
+
 .MuiSelect-root .MuiSelect-select .MuiSelect-selectMenu .MuiInputBase-input .MuiInput-input {
   padding: 22px !important;
 }
@@ -18,10 +18,14 @@ label {
 }
 .MuiInput-underline:after,
 .MuiInput-underline:before {
-  border: solid 2px $main-color !important;
-  margin: 4px;
+  // border: solid 1px rgba( $main-color, 1 ) !important;
+  margin: -21px 0px 1px 0px;
+  height: 29px;
 }
-
+.MuiInput-underline:after {
+  position: initial !important;
+  transform: none !important;
+}
 .MuiInputBase-input,
 .MuiInput-underline:before {
   color: white !important;
@@ -56,7 +60,7 @@ input:-webkit-autofill {
 }
 select {
   &:focus {
-    border: solid .5px $main-color !important;
+    border: solid 0.5px $main-color !important;
     outline: $main-color !important;
   }
 }

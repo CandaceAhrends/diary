@@ -5,7 +5,7 @@ import moment from 'moment';
 //const url = 'http://localhost:3200/food/diary?date=';
 //const url = (date,userId)=>`http://ec2-54-86-134-25.compute-1.amazonaws.com:3200/diary/list?date=${date}&userId=${userId}`;
 //const url = (date,userId)=>`http://localhost:3500/diary/remove?date=${date}&userId=${userId}`;
-const url = (date,userId)=>`http://ec2-54-86-134-25.compute-1.amazonaws.com:3200/diary/remove?date=${date}&userId=${userId}`;
+const url = (date,userId)=>`http://35.221.47.246:3200/diary/remove?date=${date}&userId=${userId}`;
 
 const SAVE_DATE_FORMAT = 'MMDDYYYY';
 

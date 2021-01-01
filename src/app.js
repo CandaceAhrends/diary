@@ -27,7 +27,7 @@ import lightBlue from '@material-ui/core/colors/lightBlue';
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: orange[500],
+      main: orange[500]
     },
     secondary: {
       main: lightBlue[500],

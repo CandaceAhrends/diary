@@ -1,0 +1,242 @@
+.calorie {
+  &-badge {
+    position: relative;
+    border-radius: 5px;
+    background: #333;
+    display: flex;
+    height: 50px;
+
+    cursor: pointer;
+    .save-msg {
+      position: absolute;
+
+      width: 20rem;
+    }
+    .save-error {
+      top: 51px;
+      left: -174px;
+      color: red;
+    }
+    .save-success {
+      top: 53px;
+      left: -38px;
+      color: green;
+    }
+    img {
+      width: 37px;
+      height: 34px;
+      padding: 0.5rem;
+    }
+  }
+
+  &-details {
+    transition: all 0.3s ease-in-out;
+    &::before {
+      content: "";
+      width: 100%;
+      border-top: solid 0.5px #999;
+      padding: 5px 0;
+    }
+    &::after {
+      content: "";
+      width: 99%;
+      border-top: solid 0.5px #999;
+      margin: 25px 0;
+    }
+    &-select-wrapper {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      margin: 0;
+      z-index: 999;
+      ul {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 18rem;
+        z-index: 999;
+        background: black;
+        display: none;
+        border: solid 0.5px orange;
+
+        li {
+          padding: 0.5rem 1rem;
+
+          &:hover {
+            background: grey;
+          }
+        }
+        &.show {
+          display: block;
+        }
+      }
+
+      &-arrow {
+        width: 36px;
+        height: 36px;
+        margin: -7px !important;
+        display: inline-block;
+        background-image: url("./arrow_drop_down_48px.svg");
+      }
+    }
+    &-portion-select {
+      width: 18rem;
+      border: solid 0.5px orange;
+      display: flex;
+      justify-content: space-between;
+      background: black;
+      color: orange;
+      height: 1.6rem;
+      margin-top: 0.3rem;
+      cursor: pointer;
+      padding: 0.5rem 1rem 1rem 0.5rem;
+      appearance: none;
+      -webkit-appearance: none;
+      span {
+        font-size: 1.2em !important;
+      }
+    }
+
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 100%;
+    margin: 0 15px;
+    .detail {
+      display: flex;
+      width: 100%;
+      span {
+        display: flex;
+        font-size: 1rem !important;
+        width: 12rem;
+        &:nth-child(2) {
+          width: 5rem;
+          text-align: start;
+          display: inline-block;
+        }
+      }
+    }
+  }
+}
+ul {
+  background-color: black;
+  padding-inline-start: 0 !important;
+
+  div {
+    margin: 0;
+
+    > span {
+      font-size: 1rem !important;
+      color: darkgrey;
+      margin: 3px 10px 0 0 !important;
+    }
+  }
+  section {
+    display: flex;
+    align-items: center;
+
+    & > div {
+      margin: 0 1rem;
+    }
+  }
+}
+
+.MuiListItemText-root {
+  margin: 0;
+}
+.MuiPaper-root {
+  color: white !important;
+}
+
+.MuiListItemText-secondary {
+  color: orange !important;
+  padding: 0.2rem;
+  display: flex;
+  p {
+    color: #999;
+    font-size: 0.8rem;
+  }
+}
+.MuiListItem-gutters {
+  padding: 0 !important;
+}
+.loading-details-spinner {
+  height: 184px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hide {
+  height: 0;
+  visibility: hidden;
+  opacity: 0;
+}
+.expand {
+  transition: all 0.2s ease-in-out;
+  transform: rotate(90deg);
+}
+.collapse {
+  transition: all 0.2s ease-in-out;
+  transform: rotate(0deg);
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.hide-header {
+  display: none !important;
+}
+.list-header {
+  height: 60px;
+  width: 103%;
+  position: fixed;
+  margin: 38px -132px 19px 37px;
+  span {
+    margin: 10px;
+    font-family: cursive;
+    font-weight: bolder;
+    color: orange;
+  }
+
+  &::after {
+    content: "";
+    height: 69px;
+    width: 100%;
+    position: absolute;
+    border-radius: -1%;
+    box-shadow: inset -3px -4px 49px #ffffffb2;
+  }
+}
+.add-food {
+  width: 20px;
+  height: 44px;
+}
+.error {
+  padding: 10px 50px;
+  color: red;
+  font-size: 2rem;
+}
+
+ul::-webkit-scrollbar {
+  width: 20px;
+}
+ul {
+  scrollbar-width: thin;
+  scrollbar-color: orange;
+}
+ul::-webkit-scrollbar-track {
+  background: #333;
+}
+ul::-webkit-scrollbar-thumb {
+  background-color: darkorange;
+  border-radius: 6px;
+  border: 3px solid orange;
+}
+@media screen and (min-width: 800px) {
+  .search-container {
+    .MuiIconButton-label {
+      svg {
+        width: 75px !important;
+        height: 75px !important;
+      }
+    }
+  }
+}

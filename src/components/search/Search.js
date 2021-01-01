@@ -5,12 +5,15 @@ import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from "@material-ui/icons/Search";
 import { makeStyles } from "@material-ui/core/styles";
 import searchFood from "../../api/searchFood";
-import DataList from "../nutrition-details/DataList";
+import NutritionList from "../nutrition-facts/NutritionList";
 import { useHistory } from "react-router-dom";
 import { StoreContext } from "../../AppContext";
 import classNames from 'classnames';
 import PacmanLoader from "react-spinners/PacmanLoader";
 import { inputValidator, stripIphoneQuotes } from "../../utils";
+import { timeout } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
+
 //import Switch from '@material-ui/core/Switch';
 
 import "./search.scss";
@@ -19,13 +22,14 @@ import "./search.scss";
 const useStyles = makeStyles((theme) => ({
   iconButton: {
     padding: 20,
-    color: "#329AF4",
+    // color: "#329AF4",
+    color: '#999'
   },
   iconSearch: {
     height: 43,
     width: 61,
     padding: '17px'
- 
+
   },
   search: {
     borderRadius: 25,
@@ -40,6 +44,7 @@ const useStyles = makeStyles((theme) => ({
   }
 
 }));
+const NO_RESULTS = "No Results";
 
 const SEARCH_ACTION = {
   type: 'SEARCH'
@@ -49,30 +54,31 @@ const SEARCH_RESULTS_ACTION = {
 };
 export default function Search({ url, search }) {
   const history = useHistory();
-  const [state,dispatch] = useContext(StoreContext);  
+  const [state, dispatch] = useContext(StoreContext);
   const [searchQueryEl, setSearchQueryEl] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
   const [errorMessage, setErrorMessage] = useState(null);
   const [showError, setShowError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [resultsErrorMessage, setResultsErrorMessage] = useState(null);
   const [useFatSecret, setUseFatSecret] = useState(false);
   const classes = useStyles();
 
 
-  useEffect( ()=>{
-    
+  useEffect(() => {
+
     console.log(searchQueryEl)
-    if(searchQueryEl){
+    if (searchQueryEl) {
       searchQueryEl.value = state.searchQuery;
       setSearchResults(state.searchResults);
     }
-  },searchQueryEl);
- 
+  }, searchQueryEl);
+
   const handleFoodDBChange = ele => {
     setUseFatSecret(!useFatSecret);
   }
 
-  const handleChange = ele =>setShowError(false); 
+  const handleChange = ele => setShowError(false);
 
   const handleEnter = ele => {
     if ('Enter' === ele.key) {
@@ -81,15 +87,16 @@ export default function Search({ url, search }) {
   }
 
   const handleSearch = () => {
-    
+
     const query = searchQueryEl.value;
+    setResultsErrorMessage(null);
     dispatch({
       ...SEARCH_ACTION, payload: {
-          searchQuery: query
+        searchQuery: query
       }
-  })
+    })
 
-    if (state.isAuthenticated) {
+    if (state.isAuthenticated && state.searchQuery !== query) {
 
       const errorMessage = inputValidator(query);
 
@@ -98,38 +105,22 @@ export default function Search({ url, search }) {
       if (!errorMessage) {
         setLoading(true);
         setSearchResults([]);
-        const food$ = searchFood(stripIphoneQuotes(query), useFatSecret).subscribe((foodList) => {
-
+        searchFood(stripIphoneQuotes(query), useFatSecret).pipe(take(1)).subscribe((foodList) => {
+          if (!foodList || !foodList.length) {
+            setResultsErrorMessage(NO_RESULTS);
+          }
           if (foodList.errorMessage) {
-            setErrorMessage(foodList.errorMessage);
-
+            setResultsErrorMessage(foodList.errorMessage);
           } else {
-            const foodListSort = (a, b) => {
-              const descA = a.food_name || '';
-              const descB = b.food_name || '';
-
-              if (descA.indexOf(query) < 3) {
-                return -1;
-              }
-              else if (descB.indexOf(query) < 3) {
-                return 0;
-              }
-              return 1;
-            }
-            const sorted = foodList.sort(foodListSort);
-
-            setSearchResults(sorted);
-
+            setSearchResults(foodList);
             dispatch({
               ...SEARCH_RESULTS_ACTION, payload: {
-                  searchResults: sorted
-              }});
+                searchResults: foodList
+              }
+            });
 
-            
+            setLoading(false);
           }
-          setLoading(false);
-          //food$.unsubscribe();
-
         });
       } else {
         setShowError(true);
@@ -139,17 +130,25 @@ export default function Search({ url, search }) {
     }
   };
 
-  var errorClasses = classNames({
+  const errorClasses = classNames({
     'error-msg': true,
     'hide': !showError,
     'show': showError
+  });
+  const resultsClasses = classNames({
+    'results-container': true,
+    'initial-load': !state.searchQuery.length || loading || resultsErrorMessage
+  });
+  const initialLoadClasses = classNames({
+    'no-selection': true,
+    'hide': state.searchQuery.length
   });
 
   return (
     <div className="search-container">
 
       <label className={errorClasses} htmlFor="search" onClick={() => setShowError(false)}>{errorMessage}</label>
-      
+
       <TextField
         autoComplete="off"
         onChange={handleChange}
@@ -158,10 +157,10 @@ export default function Search({ url, search }) {
         name="search"
         inputRef={el => setSearchQueryEl(el)}
         type="text"
-       
+
         InputProps={{
           className: classes.input,
-          pattern: "^[a-zA-Z0-9_.-]+$",
+
           form: {
             autoComplete: "off",
           },
@@ -172,6 +171,7 @@ export default function Search({ url, search }) {
                 onClick={handleSearch}
                 className={classes.iconButton}
                 edge="end"
+
               >
                 <SearchIcon className={classes.iconSearch}></SearchIcon>
               </IconButton>
@@ -180,25 +180,28 @@ export default function Search({ url, search }) {
         }}
       />
 
-      <div class="results-container">
-        {searchResults.length ? (
-          <>
-            <DataList useFatSecret={useFatSecret} data={searchResults}></DataList></>
-        ) : null}
-        <div className="loader"> <PacmanLoader
+      <div className={resultsClasses} >
+        {
+          searchResults.length ? (
+            <>
+              <NutritionList useFatSecret={useFatSecret} data={searchResults}></NutritionList></>
+          ) : null
+        }
+        < div className="loader"> <PacmanLoader
 
           size={100}
           color={"orange"}
           loading={loading}
         />
         </div>
-      </div>      
-
-      <main className={!searchQueryEl || searchQueryEl.value.length? 'hide no-selection' : 'no-selection'}>
+      </div>
+      { resultsErrorMessage ? <p className="results-error">{resultsErrorMessage}</p> : null}
+      <main className={initialLoadClasses}>
         <img src="book.png" />
         <p>Enter Food or brand name</p>
+
       </main>
 
-    </div>
+    </div >
   );
 }
