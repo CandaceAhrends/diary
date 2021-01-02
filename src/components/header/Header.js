@@ -22,7 +22,7 @@ const Header = (props) => {
 
   return (
     <>
-     {state.user ? <span className='user'>Welcome  {state.user}</span> : null}
+      {state.user ? <span className='user'>Welcome  {state.user}</span> : null}
       <nav class="primary-menu">
         <div class="logo">
           <p>Diet
@@ -31,11 +31,11 @@ const Header = (props) => {
           </a> */}
             < p className="usda" >USDA</p>
           </p>
-          <p>Analyzer   </p>
+          <p>Diary</p>
 
         </div>
 
-       
+
         <div>
           <Actionbuttons></Actionbuttons>
 

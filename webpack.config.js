@@ -36,10 +36,8 @@ module.exports = {
     new HtmlWebpackPlugin({
       filename: './index.html',
       publicPath: '/diet/',
-      title: 'Diet Analyzer',
-      base: { 'href': '/diet' },
-      meta: { viewport: 'width=device-width, user-scalable=no' },
-      templateContent: '<div id="container"></div>'
+      template: './index-template.ejs',
+      inject: 'body',
     })
   ],
 

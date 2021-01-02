@@ -1,44 +1,49 @@
-html, body{
+html,
+body {
    font-family: "roboto";
    overflow-x: hidden;
    padding: 0;
-   margin: 0
+   margin: 0;
 }
-body{
+body {
    background: black;
    color: white;
 }
-a{
+a {
    text-decoration: none;
 }
-li{
+li {
    list-style: none;
 }
-.hide{
+.hide {
    visibility: hidden;
 }
-.show{
+.show {
    visibility: visible;
 }
-#container{
+#container {
    position: fixed;
-    width: 100vw;
+   width: 100vw;
 }
 $main-color: orange;
 
-@mixin flex-center{
+@mixin flex-center {
    display: flex;
    align-items: center;
    justify-content: center;
 }
 
-@mixin clickable-img-link($padding){
+@mixin clickable-img-link($padding) {
    a {
       padding: #{$padding};
       img {
-          &:hover {
-              cursor: pointer;
-          }
+         &:hover {
+            cursor: pointer;
+         }
       }
-  }
+   }
+}
+
+@mixin clickable() {
+   cursor: pointer;
 }

@@ -3,6 +3,7 @@ import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from "@material-ui/icons/Search";
+import CancelIcon from "@material-ui/icons/Clear";
 import { makeStyles } from "@material-ui/core/styles";
 import searchFood from "../../api/searchFood";
 import NutritionList from "../nutrition-facts/NutritionList";
@@ -96,13 +97,13 @@ export default function Search({ url, search }) {
       }
     })
 
-    if (state.isAuthenticated && state.searchQuery !== query) {
+    if (state.isAuthenticated) {
 
-      const errorMessage = inputValidator(query);
+      const errorFound = inputValidator(query);
 
-      setErrorMessage(errorMessage);
+      setErrorMessage(errorFound);
 
-      if (!errorMessage) {
+      if (!errorFound) {
         setLoading(true);
         setSearchResults([]);
         searchFood(stripIphoneQuotes(query), useFatSecret).pipe(take(1)).subscribe((foodList) => {
@@ -129,7 +130,9 @@ export default function Search({ url, search }) {
       history.push('/login');
     }
   };
-
+  const handleClear = evt => {
+    searchQueryEl.value = '';
+  }
   const errorClasses = classNames({
     'error-msg': true,
     'hide': !showError,
@@ -137,11 +140,12 @@ export default function Search({ url, search }) {
   });
   const resultsClasses = classNames({
     'results-container': true,
-    'initial-load': !state.searchQuery.length || loading || resultsErrorMessage
+    'initial-load': !state.searchQuery.length || loading || resultsErrorMessage,
+    'show-intro': !state.isAuthenticated || state.searchQuery.length && !searchResults.length
   });
   const initialLoadClasses = classNames({
     'no-selection': true,
-    'hide': state.searchQuery.length
+    'hide': state.searchQuery.length && state.isAuthenticated
   });
 
   return (
@@ -167,12 +171,18 @@ export default function Search({ url, search }) {
 
           endAdornment: (
             <InputAdornment position="end">
+
+              <CancelIcon className={searchQueryEl ? 'cancel-search' : 'hide'} onClick={handleClear}></CancelIcon>
+
+
+
               <IconButton
                 onClick={handleSearch}
                 className={classes.iconButton}
                 edge="end"
 
               >
+
                 <SearchIcon className={classes.iconSearch}></SearchIcon>
               </IconButton>
             </InputAdornment>
@@ -197,7 +207,7 @@ export default function Search({ url, search }) {
       </div>
       { resultsErrorMessage ? <p className="results-error">{resultsErrorMessage}</p> : null}
       <main className={initialLoadClasses}>
-        <img src="book.png" />
+        <img src="book-101.gif" />
         <p>Enter Food or brand name</p>
 
       </main>

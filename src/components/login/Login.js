@@ -11,11 +11,9 @@ import { StoreContext } from "../../AppContext";
 import { useHistory, useLocation } from "react-router-dom";
 import { ErrorMessage } from "../error/ErrorMessage";
 import { inputValidator } from "../../utils";
+import { LOGIN_ACTION } from '../../actions'
 import './login.scss';
 
-const LOGIN_ACTION = {
-    type: 'LOGIN'
-}
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -59,8 +57,8 @@ const Login = () => {
         };
     }, [state]);
 
-    const handleSubmit = () => {
-
+    const handleSubmit = (evt) => {
+        evt.preventDefault();
 
         const error = inputValidator(user.name);
         if (!error) {
@@ -87,6 +85,7 @@ const Login = () => {
     };
     const handleChange = (evt) => {
         console.log("data changed >", evt.target.name, evt.target.value);
+
         const changedUser = { ...user, [evt.target.name]: evt.target.value };
         setUser(changedUser);
         console.log(changedUser);
@@ -104,7 +103,7 @@ const Login = () => {
 
 
 
-                <form className={classes.root} onChange={handleChange} noValidate autoComplete="off">
+                <form className={classes.root} onSubmit={handleSubmit} on onChange={handleChange} noValidate autoComplete="off">
                     <Typography className={classes.header} variant="h5" gutterBottom>
                         Welcome
                 </Typography>
@@ -131,9 +130,9 @@ const Login = () => {
 
                         <Button
                             variant="contained"
-
+                            type="submit"
                             color="primary"
-                            onClick={handleSubmit}
+
                             className={classes.button}
                             startIcon={<LoginIcon />}
                         >

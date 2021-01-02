@@ -1,6 +1,5 @@
 @import "../../styles.scss";
 
-
 .primary-menu {
   position: relative;
   width: 100%;
@@ -10,7 +9,7 @@
   align-items: baseline;
   justify-content: space-between;
   .logo {
-    font-size: .5rem;
+    font-size: 0.5rem;
     color: #ffb347;
     font-family: cursive;
     text-align: center;
@@ -19,29 +18,29 @@
     font-weight: bolder;
     transition: all 0.9s ease-out;
     p {
-      &:first-child{
-       // color: #329AF4;
+      &:first-child {
+        // color: #329AF4;
       }
       &:last-child {
         margin-top: -26px;
-        margin-right: 99px
+        margin-right: 99px;
       }
     }
   }
   &::after {
-    content: ' ';
+    content: " ";
     top: 0;
     left: 0;
     bottom: 0;
     right: 0;
-    background-image: url('./diet.jpg');
+    background-image: url("./diet.jpg");
     background-position: bottom;
     background-repeat: no-repeat;
     background-size: cover;
 
-    transition: all .9s ease-out;
+    transition: all 0.9s ease-out;
     height: 10px;
-    transform: scale(.5);
+    transform: scale(0.2);
     position: absolute;
   }
 }
@@ -50,37 +49,36 @@
     font-size: 2rem;
   }
   &::after {
-    content: ' ';
-    
+    content: " ";
+
     opacity: 0.5;
-  
+
     z-index: -1;
     background-position: center;
-    transition: all .9s ease-out;
-    transform: scale(1.5);
+    transition: all 0.9s ease-out;
+    transform: scale(1.3);
     height: 90vh;
   }
 }
-.usda{
+.usda {
   font-size: 0.8rem;
-    color: white;
-    position: absolute;
-    top: 46px;
-    left: 49px;
+  color: white;
+  position: absolute;
+  top: 46px;
+  left: 49px;
 }
-  
-.user{
+
+.user {
   position: absolute;
   top: 45px;
-  left: .1rem;
+  left: 0.1rem;
   z-index: 999;
 }
 
 @media screen and (min-width: 800px) {
-  
   .animated-menu {
     .logo {
       font-size: 2.2rem;
     }
-  }   
+  }
 }

@@ -1,20 +1,28 @@
 import Axios from "./Axios";
 import { of, from, forkJoin, throwError, Observable } from "rxjs";
-import { switchMap, map, tap, catchError, reduce } from "rxjs/operators";
+import { switchMap, map, tap, catchError, reduce, timeout } from "rxjs/operators";
 import moment from 'moment';
-//const fatSecretUrl = 'http://localhost:3300/fs/detail?id=';
-const fatSecretUrl = 'http://ec2-54-86-134-25.compute-1.amazonaws.com:3000/fs/detail?id=';
+
 const usdaUrl = 'http://35.221.47.246:3000/usda/detail?id=';
 //const usdaUrl = 'http://localhost:3300/usda/detail?id=';
 
 
-const foodDetail = (foodId, useFatSecret) => {
-
+const foodDetail = (foodId, timeoutMS = 10000) => {
+    console.log("timeout ?????? v = ", timeoutMS);
     return from(
-        Axios.get(`${useFatSecret ? fatSecretUrl : usdaUrl}${foodId}`)
+        Axios.get(`${usdaUrl}${foodId}`)
             .pipe(
+                timeout(timeoutMS),
                 map(res => res.data),
-                catchError(err => of(err))
+                map(data => {
+                    if (!data.portionList.length) {
+                        data.portionList.push({ description: 'One serving', weight: 100 });
+                    }
+                    return data;
+                }),
+                catchError(err => {
+                    return of({ errorMessage: err.message || err.errorMessage })
+                })
             )
     )
 

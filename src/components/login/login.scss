@@ -12,7 +12,7 @@
     transition: all 1s ease-out;
 
     .MuiOutlinedInput-input {
-        padding: 1.2rem !important;
+        padding: 1.1rem !important;
     }
 
     &-form {
@@ -38,12 +38,18 @@
     background: black;
     opacity: 1;
     transition: width 0.4s ease-out;
-  ;
     .login-container {
         opacity: 1;
         transition: opacity 3s ease-out;
 
         border-top: 0.5px solid rgba(255, 255, 255, 0.5);
         padding: 2rem;
+    }
+}
+@media only screen and (orientation: landscape) {
+    .animate-load {
+        .login-container {
+            padding: 0.1rem;
+        }
     }
 }

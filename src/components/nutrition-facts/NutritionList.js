@@ -1,59 +1,33 @@
-import React, { useState, useContext, useEffect, useRef } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-
+import React, { useState, useContext, useEffect } from "react";
 import List from "@material-ui/core/List";
-
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
-import Details from "./Details";
 import saveFood from "../../api/savefood";
 import foodDetail from "../../api/foodDetail";
 import { getcurrentDate } from "../../utils";
 import { useHistory } from "react-router-dom";
 import { StoreContext } from "../../AppContext";
 import { take } from 'rxjs/operators';
-import ClipLoader from "react-spinners/ClipLoader";
 import { stripAllAfterFirstComma, stripAllBeforeFirstComma } from "../../utils";
 import "./datalist.scss";
+import "./nutritionList.scss";
 import UsdaDetails from "./UsdaDetails";
-import { useInView } from "react-intersection-observer";
-import VirtualScroll from "../virtual-scroll/VirtualScroll";
 
+const LOGIN_PATH = '/login';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: "100vw",
-    position: "absolute",
-    left: 0,
-    backgroundColor: "black",
-    height: "calc(100vh - 300px)",
-    overflow: "scroll",
-    overflowX: "hidden",
-    color: "white",
-    [theme.breakpoints.up('md')]: {
-      height: "calc(100vh - 320px)",
-    },
-    [theme.breakpoints.up('lg')]: {
-      height: "calc(100vh - 350px)",
-    },
-  },
-  secondary: {
-    color: "orange",
-  }
-}));
+const RELOAD_DIARY_ACTION = {
+  type: 'RELOAD_DIARY'
 
+};
 
 export default function NutritionList({ data, useFatSecret }) {
   const history = useHistory();
-  const [state] = useContext(StoreContext);
-  const classes = useStyles();
+  const [state, dispatch] = useContext(StoreContext);
   const [expandables, setExpandables] = useState(null);
   const [foodList, setFoodList] = useState(null);
-  const [selectedPortion, setSelecedPortion] = useState({});
   const [saveStatus, setSaveStatus] = useState(0);
-  const [testing, setTesting] = useState("testing value")
 
-  //const [t, setT]= useRef('okay');
+
   useEffect(() => {
     const expandables = data.reduce((expandables, foodItem) => {
       expandables[foodItem.food_id] =
@@ -74,12 +48,9 @@ export default function NutritionList({ data, useFatSecret }) {
         secondaryDescription: stripAllBeforeFirstComma(food.food_name)
       }
     });
-
-
     setFoodList(foodList);
 
   }, data);
-
 
   const toggleExpanded = (expandedItem) => {
     expandedItem.expanded = !expandedItem.expanded;
@@ -88,18 +59,16 @@ export default function NutritionList({ data, useFatSecret }) {
 
   const onSelectedPortion = (portion, foodId) => {
     expandables[foodId].selectedPortion = portion;
-
     setExpandables({ ...expandables });
   }
   const onExpandDetails = ({ food_id }) => {
-
 
     if (state.isAuthenticated) {
       const expandedItem = expandables[food_id];
 
       if (!expandedItem.expanded && !expandedItem.isFetched) {
         expandedItem.fetching = true;
-        foodDetail(food_id, useFatSecret).subscribe(details => {
+        foodDetail(food_id).subscribe(details => {
           if (details.errorMessage) {
             expandedItem.errorMessage = details.errorMessage;
           }
@@ -115,7 +84,7 @@ export default function NutritionList({ data, useFatSecret }) {
 
     }
     else {
-      history.push('/login');
+      history.push(LOGIN_PATH);
     }
 
   };
@@ -131,7 +100,7 @@ export default function NutritionList({ data, useFatSecret }) {
           id: foodId,
           date: getcurrentDate(),
           qty: 1,
-          type: useFatSecret ? 'fs' : 'usda',
+          type: 'usda',
           userId: state.user,
           portion: JSON.stringify(portion)
         }
@@ -139,6 +108,14 @@ export default function NutritionList({ data, useFatSecret }) {
           console.log(res);
           if (res.data && res.data.message) {
             setSaveStatus(1);
+
+
+            dispatch({
+              ...RELOAD_DIARY_ACTION, payload: {
+                reloadDiary: true
+              }
+            })
+
           }
           else {
             setSaveStatus(-1);
@@ -148,27 +125,19 @@ export default function NutritionList({ data, useFatSecret }) {
       }
     }
     else {
-      history.push('/login');
+      history.push(LOGIN_PATH);
     }
-
-
   }
 
   const isExpanded = (id) => {
-    console.log("what is value", testing)
-    //return true;
     return expandables[id].expanded;
-  }
-
-  const scrollNext = info => {
-    console.log("scroll next", info);
   }
 
   return (
     <>
 
-      {expandables ? <List className={classes.root}>
-        <VirtualScroll scrollNext={scrollNext.bind(this)} data={foodList} rowRenderer={foodList => foodList.map((food, idx) => {
+      {expandables ? <List className="nutrition-list">
+        {foodList.map((food, idx) => {
           return (
             <>
               <ListItem
@@ -197,8 +166,8 @@ export default function NutritionList({ data, useFatSecret }) {
           );
         })}
 
-        >
-        </VirtualScroll>
+
+
       </List> : null}
     </>
   );
