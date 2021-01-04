@@ -25,8 +25,6 @@ export default function NutritionList({ data, useFatSecret }) {
   const [state, dispatch] = useContext(StoreContext);
   const [expandables, setExpandables] = useState(null);
   const [foodList, setFoodList] = useState(null);
-  const [saveStatus, setSaveStatus] = useState(0);
-
 
   useEffect(() => {
     const expandables = data.reduce((expandables, foodItem) => {
@@ -36,7 +34,8 @@ export default function NutritionList({ data, useFatSecret }) {
         details: {},
         isFetched: false,
         fetching: false,
-        selectedPortion: null
+        selectedPortion: null,
+        saveStatus: 0
       }
       return expandables;
     }, {});
@@ -91,10 +90,13 @@ export default function NutritionList({ data, useFatSecret }) {
 
 
   const saveToDiary = foodId => {
-    setSaveStatus(null);
 
     if (state.isAuthenticated) {
-      const portion = expandables[foodId].selectedPortion;
+      const expandedItem = expandables[foodId];
+
+      const portion = expandedItem.selectedPortion;
+
+      portion.saveStatus = 0;
       if (portion) {
         const diaryItem = {
           id: foodId,
@@ -107,8 +109,8 @@ export default function NutritionList({ data, useFatSecret }) {
         saveFood(diaryItem).pipe(take(1)).subscribe(res => {
           console.log(res);
           if (res.data && res.data.message) {
-            setSaveStatus(1);
-
+            expandedItem.saveStatus = 1;
+            setExpandables({ ...expandables });
 
             dispatch({
               ...RELOAD_DIARY_ACTION, payload: {
@@ -118,7 +120,8 @@ export default function NutritionList({ data, useFatSecret }) {
 
           }
           else {
-            setSaveStatus(-1);
+            expandedItem.saveStatus = -1
+            setExpandables({ ...expandables });
           }
 
         });
@@ -158,7 +161,7 @@ export default function NutritionList({ data, useFatSecret }) {
               <span>{expandables[food.food_id].fetching || expandables[food.food_id].isFetched ? <UsdaDetails errorMessage={expandables[food.food_id].errorMessage} show={expandables[food.food_id].expanded}
                 data={expandables[food.food_id].details}
                 saveToDiary={saveToDiary}
-                saveStatus={saveStatus}
+                saveStatus={expandables[food.food_id].saveStatus}
                 onSelectedPortion={portion => onSelectedPortion(portion, food.food_id)} ></UsdaDetails> : null}</span>
 
             </>

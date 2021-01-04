@@ -4,9 +4,11 @@ import { NutritionFacts } from './NutritionFacts';
 import "./datalist.scss";
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
+import { stripUnwantedChars } from '../../utils';
 const PORTION_SELECT_DROP_DOWN = "portion-select";
+
 const MAX_PORTION_LABEL_SIZE = 25;
- 
+
 export default function UsdaDetails({ data, show, saveStatus, errorMessage, onSelectedPortion, saveToDiary }) {
     console.log("show is ? ", show);
 
@@ -88,23 +90,25 @@ export default function UsdaDetails({ data, show, saveStatus, errorMessage, onSe
 
                             </span>
 
-                            <ul className={showPortionPopup ? 'show' : ''}> {data.portionList.map((portion, idx) => <li key={idx} id={JSON.stringify(portion)}>{portion.description}</li>)}
+                            <ul className={showPortionPopup ? 'show' : ''}>
+                                {data.portionList.map((portion, idx) => <li key={idx} id={JSON.stringify(portion)}>
+                                    {stripUnwantedChars(portion.description)}</li>)}
                             </ul>
                         </div>
                     </div>
-                    <div> <span className="calorie-badge"
-                        onClick={() => onAddToDiary(data.foodId)}>
-                        {saveStatus===-1?<SentimentVeryDissatisfiedIcon style={{ color: 'red', padding: '1rem'}} />
-                        :saveStatus === 0?<img src="./add.svg"></img>: <InsertEmoticonIcon style={{ color: 'green', padding: '1rem'}}  ></InsertEmoticonIcon>  }
 
-                       {saveStatus===-1? <span className="save-msg save-error">{saveError}</span>:null}
-                       {saveStatus===1?<span className="save-msg save-success">{saveSuccess}</span>:null}
-                    </span>  </div>
-                    
+
                 </section>
+                <div className="add-to-diary"> <span className="calorie-badge"
+                    onClick={() => onAddToDiary(data.foodId)}>
+                    {saveStatus === -1 ? <SentimentVeryDissatisfiedIcon style={{ color: 'red', padding: '1rem' }} />
+                        : saveStatus === 0 ? <img src="./add.svg"></img> : <InsertEmoticonIcon style={{ color: 'green', padding: '1rem' }}  ></InsertEmoticonIcon>}
 
+                    {saveStatus === -1 ? <span className="save-msg save-error">{saveError}</span> : null}
+                    {saveStatus === 1 ? <span className="save-msg save-success">{saveSuccess}</span> : null}
+                </span>  </div>
                 {nutritionList.length ? <NutritionFacts nutrients={nutritionList}></NutritionFacts> : null}
-               
+
             </div>
 
         </div></> : errorMessage ? <p class="error">{errorMessage}</p> : <div className={show ? 'loading-details-spinner' : 'hide'}> <PropagateLoader

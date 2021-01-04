@@ -1,66 +1,62 @@
-.nutrition-facts{
-    width: 94%;
+.nutrition-facts {
+    width: 95%;
     padding: 1rem 0;
     color: #999;
     font-size: 1.2rem;
-    &-calories{
+    &-calories {
         display: flex;
         justify-content: space-between;
         font-size: 1.8rem;
-      
-        padding-bottom: .8rem;
+
+        padding-bottom: 0.8rem;
         margin-bottom: 1rem;
         border-bottom: rgb(71, 70, 70) solid 1rem;
     }
-    &-fat{
-        li{
-            width: 25rem;
-            &:first-child{
-                border-bottom:  solid .5px #999;
-                padding-bottom: .3rem;
+    &-fat {
+        li {
+            width: 21rem;
+            &:first-child {
+                border-bottom: solid 0.5px #999;
+                padding-bottom: 0.3rem;
                 width: 97%;
             }
-            &:nth-child(2){
-                padding-top: .4rem;
+            &:nth-child(2) {
+                padding-top: 0.4rem;
             }
-            span{
-                &:first-child{
+            span {
+                &:first-child {
                     font-weight: bolder;
-                     
                 }
-                &:last-child{
+                &:last-child {
                     margin-left: 1rem;
                 }
             }
-            &:not(:first-child){
-               
-                span{
+            &:not(:first-child) {
+                span {
                     margin-left: 1rem;
-                    &:first-child{
-                        
-                        font-size: .9rem;
+                    &:first-child {
+                        font-size: 0.9rem;
                     }
-                }   
+                }
             }
         }
     }
-    &-content{
-        li{
-            width: 25rem;
+    &-content {
+        li {
+            width: 21rem;
 
-            margin-top: .4rem;
-            &:first-child{
-                border-top:  solid .5px #999;
+            margin-top: 0.4rem;
+            &:first-child {
+                border-top: solid 0.5px #999;
                 padding-top: 1rem;
                 width: 97%;
             }
-            span{
-                &:first-child{
+            span {
+                &:first-child {
                     font-weight: bolder;
                     margin-right: 1rem;
                 }
             }
-            
         }
     }
 }

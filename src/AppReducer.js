@@ -1,10 +1,11 @@
-import { result } from "lodash";
+import { saveSessionData } from "./utils";
 
 
 const Reducer = (state, action) => {
   switch (action.type) {
     case "LOGIN":
       console.log("Action: ", action, state);
+      saveSessionData({ ...action.payload, isAuthenticated: true });
       return {
         ...state,
         isAuthenticated: true,

@@ -1,5 +1,5 @@
 import moment from 'moment';
-
+const DIARY_STATE = 'diarystate';
 const SAVE_DATE_FORMAT = 'MMDDYYYY';
 
 export const getcurrentDate = () => {
@@ -24,17 +24,28 @@ export const inputValidator = (text = stripIphoneQuotes(text)) => {
         else if (!isValidChar) {
                 return (INVALID_CHAR_ERROR);
         }
-        
+
 
 };
 
-export const stripAllAfterFirstComma = text =>{
+export const stripAllAfterFirstComma = text => {
         const comma = text.indexOf(",");
-      return  comma > 0?text.slice( 0, comma):text;
+        return comma > 0 ? text.slice(0, comma) : text;
 
 }
-export const stripAllBeforeFirstComma = text =>{
+export const stripAllBeforeFirstComma = text => {
         const comma = text.indexOf(",");
-        return comma > 0?text.slice(comma+1):'';
+        return comma > 0 ? text.slice(comma + 1) : '';
+}
+
+export const stripUnwantedChars = description => {
+
+        return description ? description.replace(/[^\w]/g, '') : '';
+}
+export const saveSessionData = sessionData => {
+        window.sessionStorage.setItem(DIARY_STATE, JSON.stringify(sessionData));
+}
+export const getSessionData = () => {
+        return JSON.parse(window.sessionStorage.getItem(DIARY_STATE));
 }
 

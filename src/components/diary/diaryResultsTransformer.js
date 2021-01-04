@@ -42,8 +42,8 @@ export function getNutrients(foodList, details) {
             });
 
             totals.push({
-                foodName: `${qty} ${nutritionDetails.description}`,
-                servingDescription: portion.description,
+                foodName: `${qty} ${nutritionDetails.description} ${ortion.description}`,
+
                 ...Object.fromEntries(computedNutrientValues),
                 qty,
 

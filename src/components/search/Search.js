@@ -207,7 +207,7 @@ export default function Search({ url, search }) {
       </div>
       { resultsErrorMessage ? <p className="results-error">{resultsErrorMessage}</p> : null}
       <main className={initialLoadClasses}>
-        <img src="diary/book-101.gif" />
+
         <p>Enter Food or brand name</p>
 
       </main>

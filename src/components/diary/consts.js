@@ -3,7 +3,7 @@ const gridOptions = {
     columnDefs: [
         // { field: 'qty', width: 10, pinned: 'left' },
         { field: 'foodName', pinned: 'left', headerName: 'Name', width: 200 },
-        { field: 'servingDescription', headerName: 'Portion' },
+        // { field: 'servingDescription', headerName: 'Portion' },
         { field: 'Energy', headerName: 'Calories' },
         { field: "Caffeine", headerName: 'Caffeine mg' },
         { field: "Calcium", headerName: 'Calcium mg' },

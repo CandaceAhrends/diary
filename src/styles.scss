@@ -26,6 +26,7 @@ li {
    width: 100vw;
 }
 $main-color: orange;
+$content-background: rgba(25, 25, 25, 1);
 
 @mixin flex-center {
    display: flex;
