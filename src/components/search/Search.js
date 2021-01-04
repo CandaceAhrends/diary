@@ -16,7 +16,7 @@ import { timeout } from 'rxjs/operators';
 import { take } from 'rxjs/operators';
 
 //import Switch from '@material-ui/core/Switch';
-
+import { SEARCH_ACTION, SEARCH_RESULTS_ACTION} from "../../actions";
 import "./search.scss";
 
 
@@ -47,12 +47,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 const NO_RESULTS = "No Results";
 
-const SEARCH_ACTION = {
-  type: 'SEARCH'
-}
-const SEARCH_RESULTS_ACTION = {
-  type: 'SEARCH_RESULTS'
-};
+
 export default function Search({ url, search }) {
   const history = useHistory();
   const [state, dispatch] = useContext(StoreContext);

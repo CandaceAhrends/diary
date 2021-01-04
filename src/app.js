@@ -1,5 +1,3 @@
-
-
 import { hot } from "react-hot-loader";
 import React, { useState, useReducer, useEffect } from "react";
 import {
@@ -17,7 +15,6 @@ import Activity from "./components/activity/Activity";
 import DiaryController from "./components/diary/DiaryController";
 import { StoreContext, Auth, initialState } from "./AppContext";
 import Reducer from './AppReducer';
-
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine-dark.css';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
@@ -25,10 +22,7 @@ import orange from '@material-ui/core/colors/orange';
 import lightBlue from '@material-ui/core/colors/lightBlue';
 import { getDiaryForDate } from "./api/getDiary";
 import { take } from 'rxjs/operators';
-import foodDetail from "./api/foodDetail";
-import { of, forkJoin } from 'rxjs';
-import { getNutrients, nutrientsTotals, formatTotals, } from './components/diary/diaryResultsTransformer';
-
+import { createDiaryList } from './components/diary/diaryResultsTransformer';
 import { RELOAD_DIARY_ACTION, DIARY_RESULTS_ACTION } from "./actions";
 
 const theme = createMuiTheme({
@@ -66,10 +60,7 @@ function RouteGuard({ children, ...rest }) {
 const App = () => {
 
   const [state, dispatch] = useReducer(Reducer, initialState);
-  const [diaryAttempts, setDiaryAttempts] = useState(0);
-  const RELOAD_DELAY = 1000 * 60 * 1;
-  const MAX_DIARY_ATTEMPTS = 3;
-
+ 
   useEffect(() => {
 
     dispatch({
@@ -82,54 +73,25 @@ const App = () => {
 
   useEffect(() => {
 
-    if (state.reloadDiary && state.isAuthenticated) {
+    if (state.reloadDiary && /*state.isAuthenticated)*/true) {
 
       dispatch({
         ...RELOAD_DIARY_ACTION, payload: {
           reloadDiary: false
         }
       });
+   
 
-      getDiaryForDate(null, state.user).pipe(take(1)).subscribe(foodList => {
+      getDiaryForDate(null, 'cand').pipe(take(1)).subscribe(foodList => {
+        if(foodList.length){
+        dispatch({
+          ...DIARY_RESULTS_ACTION, payload: {
+            diaryResults: createDiaryList(foodList)
+          }
+        })
 
-        if (foodList.length) {
-          const foodItem$ = foodList.map((foodItem, idx) => {
-
-            return [`request-${idx}`, foodDetail(foodItem.foodId, 30000)];
-          });
-
-          forkJoin({
-            ...Object.fromEntries(foodItem$)
-          }).subscribe(details => {
-
-            const nutrients = getNutrients(foodList, details);
-            const totalNutrition = nutrientsTotals(nutrients);
-            const formattedTotals = formatTotals(totalNutrition);
-            nutrients.push(Object.fromEntries(formattedTotals));
-            const validData = formattedTotals.length > 0;
-            console.log("diary attempts >>", diaryAttempts);
-
-            if (!validData && diaryAttempts < MAX_DIARY_ATTEMPTS) {
-              setDiaryAttempts(diaryAttempts + 1);
-
-              setTimeout(() => {
-                dispatch({
-                  ...RELOAD_DIARY_ACTION, payload: {
-                    reloadDiary: true
-                  }
-                })
-              }, RELOAD_DELAY);
-            }
-
-            if (validData) dispatch({
-              ...DIARY_RESULTS_ACTION, payload: {
-                diaryResults: nutrients
-              }
-            })
-
-
-          });
-        }
+       
+      }
       });
     }
 

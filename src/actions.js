@@ -11,3 +11,9 @@ export const RELOAD_DIARY_ACTION = {
     type: 'RELOAD_DIARY'
 
 };
+export const SEARCH_ACTION = {
+    type: 'SEARCH'
+  }
+export const SEARCH_RESULTS_ACTION = {
+    type: 'SEARCH_RESULTS'
+  };

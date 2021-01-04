@@ -95,6 +95,7 @@ export default function NutritionList({ data, useFatSecret }) {
 
     if (state.isAuthenticated) {
       const portion = expandables[foodId].selectedPortion;
+      const details = expandables[foodId].details;
       if (portion) {
         const diaryItem = {
           id: foodId,
@@ -102,7 +103,8 @@ export default function NutritionList({ data, useFatSecret }) {
           qty: 1,
           type: 'usda',
           userId: state.user,
-          portion: JSON.stringify(portion)
+          portion: JSON.stringify(portion),
+          details: JSON.stringify(details)
         }
         saveFood(diaryItem).pipe(take(1)).subscribe(res => {
           console.log(res);
