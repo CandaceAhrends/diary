@@ -38,6 +38,9 @@ module.exports = {
       publicPath: '/diet/',
       template: './index-template.ejs',
       inject: 'body',
+    }),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('production'),
     })
   ],
 

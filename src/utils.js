@@ -28,6 +28,15 @@ export const inputValidator = (text = stripIphoneQuotes(text)) => {
 
 };
 
+export const addElipses = (text, maxLength = 10) => {
+        console.log(text.length, String(text).length, `${text}`)
+        if (String(text).length > maxLength) {
+                return `${text.slice(0, maxLength)}...`;
+        }
+
+        return text;
+}
+
 export const stripAllAfterFirstComma = text => {
         const comma = text.indexOf(",");
         return comma > 0 ? text.slice(0, comma) : text;
@@ -39,8 +48,7 @@ export const stripAllBeforeFirstComma = text => {
 }
 
 export const stripUnwantedChars = description => {
-
-        return description ? description.replace(/[^\w]/g, '') : '';
+        return description ? description.replace(/[^\w\s]/g, '') : '';
 }
 export const saveSessionData = sessionData => {
         window.sessionStorage.setItem(DIARY_STATE, JSON.stringify(sessionData));

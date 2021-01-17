@@ -75,7 +75,16 @@ export default function UsdaDetails({ data, show, saveStatus, errorMessage, onSe
     return (
         data.portionList ? < ><div className={show ? 'show calorie-details' : 'hide calorie-details'}>
             <div>
+                <section className="add-to-diary">
+                    <span className="calorie-badge"
+                        onClick={() => onAddToDiary(data.foodId)}>
+                        {saveStatus === -1 ? <SentimentVeryDissatisfiedIcon style={{ color: 'red', padding: '1rem' }} />
+                            : saveStatus === 0 ? <img src="./add.svg"></img> : <InsertEmoticonIcon style={{ color: 'green', padding: '1rem' }}  ></InsertEmoticonIcon>}
 
+                        {saveStatus === -1 ? <span className="save-msg save-error">{saveError}</span> : null}
+                        {saveStatus === 1 ? <span className="save-msg save-success">{saveSuccess}</span> : null}
+                    </span>
+                </section>
 
                 <section>
                     <div className="calorie-details-select-wrapper"
@@ -99,14 +108,7 @@ export default function UsdaDetails({ data, show, saveStatus, errorMessage, onSe
 
 
                 </section>
-                <div className="add-to-diary"> <span className="calorie-badge"
-                    onClick={() => onAddToDiary(data.foodId)}>
-                    {saveStatus === -1 ? <SentimentVeryDissatisfiedIcon style={{ color: 'red', padding: '1rem' }} />
-                        : saveStatus === 0 ? <img src="./add.svg"></img> : <InsertEmoticonIcon style={{ color: 'green', padding: '1rem' }}  ></InsertEmoticonIcon>}
 
-                    {saveStatus === -1 ? <span className="save-msg save-error">{saveError}</span> : null}
-                    {saveStatus === 1 ? <span className="save-msg save-success">{saveSuccess}</span> : null}
-                </span>  </div>
                 {nutritionList.length ? <NutritionFacts nutrients={nutritionList}></NutritionFacts> : null}
 
             </div>

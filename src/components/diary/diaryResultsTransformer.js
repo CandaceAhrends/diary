@@ -1,4 +1,10 @@
+import { addElipses } from '../../utils';
 
+const computedNutrientValues = ({ portion, details }) => details.nutrients.map(nutrient => {
+    const amt = (nutrient.amount * portion.weight) / 100;
+    const label = stripLabel(nutrient.name);
+    return [`${label}`, amt.toFixed(2)];
+});
 
 const stripLabel = label => {
     const indexOfSpace = label.indexOf(' ');
@@ -19,68 +25,51 @@ const stripLabel = label => {
     return label;
 }
 
+export const createDiaryList = foodList => {
 
+    foodList = foodList.filter(food => food.details);
 
-
-export function getNutrients(foodList, details) {
-
-    const foodQtys = foodList.reduce((qtys, foodItem, idx) => {
-        const portion = JSON.parse(foodItem.portion);
-        qtys[`request-${idx}`] = { qty: foodItem.qty, foodPortion: portion };
-        return qtys;
-    }, {});
-
-    return Object.entries(details).reduce((totals, [key, nutritionDetails]) => {
-        if (nutritionDetails.description) {
-            const qty = foodQtys[key].qty;
-            const portion = foodQtys[key].foodPortion;
-
-            const computedNutrientValues = nutritionDetails.nutrients.map(nutrient => {
-                const amt = (nutrient.amount * portion.weight) / 100;
-                const label = stripLabel(nutrient.name);
-                return [`${label}`, amt.toFixed(2)];
-            });
-
-            totals.push({
-                foodName: `${qty} ${nutritionDetails.description} ${ortion.description}`,
-
-                ...Object.fromEntries(computedNutrientValues),
-                qty,
-
-            });
+    const items = foodList.map(food => {
+        return {
+            details: JSON.parse(food.details),
+            portion: JSON.parse(food.portion),
+            qty: food.qty
         }
+    });
 
-        return totals;
-    }, []);
-}
+    const computedItems = items.map(item => {
+        return {
+            foodName: `${item.qty} ${addElipses(item.details.description, 30)} \n ${item.portion.description}`,
+
+            ...Object.fromEntries(computedNutrientValues(item)),
+            qty: item.qty
+        };
+    });
 
 
-export function nutrientsTotals(nutrients) {
-
-
-    return nutrients.reduce((summary, item) => {
-        Object.entries(item).map(([k, v]) => {
+    const totals = computedItems.reduce((acc, foodItem) => {
+        Object.entries(foodItem).map(([k, v]) => {
             if (/^\d+\.+\d+$/.test(v)) {
-                summary[k] = summary[k] || 0;
-                summary[k] += (v) * item.qty;
+                acc[k] = acc[k] || 0;
+                acc[k] += (v) * foodItem.qty;
             }
             else {
 
-                summary[k] = '';
+                acc[k] = '';
             }
         });
-        return summary;
+        return acc;
+
+
     }, {});
 
-}
+    const formattedTotals = Object.entries(totals).map(([k, v]) => {
 
-export function formatTotals(totalNutrition) {
-
-    return Object.entries(totalNutrition).map(([k, v]) => {
-        console.log("k ???", k, v);
-        if (/^\d+\.+\d+$/.test(v)) {
+        if (k === 'Energy') {
+            return [k, parseInt(v)];
+        }
+        else if (/^\d+\.+\d+$/.test(v)) {
             const amt = Number(v).toFixed(2);
-            console.log("amt ", amt, k, v);
             return [k, amt]
 
         }
@@ -90,7 +79,7 @@ export function formatTotals(totalNutrition) {
         return [k, v];
 
     })
-
+    computedItems.push(Object.fromEntries(formattedTotals));
+    return computedItems;
 
 }
-

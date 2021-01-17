@@ -1,8 +1,18 @@
+import React from 'react';
+
+const FoodNameCellRenderer = ({ value }) => {
+    return (value ? <span className="name-renderer">{value}</span> : <span>Totals:</span>)
+}
+
 const gridOptions = {
     enableSorting: true,
+    rowHeight: 125,
+    frameworkComponents: {
+        'foodNameCellRenderer': FoodNameCellRenderer
+    },
     columnDefs: [
         // { field: 'qty', width: 10, pinned: 'left' },
-        { field: 'foodName', pinned: 'left', headerName: 'Name', width: 200 },
+        { field: 'foodName', pinned: 'left', headerName: 'Name', width: 200, cellRenderer: 'foodNameCellRenderer' },
         // { field: 'servingDescription', headerName: 'Portion' },
         { field: 'Energy', headerName: 'Calories' },
         { field: "Caffeine", headerName: 'Caffeine mg' },
@@ -41,10 +51,15 @@ const gridOptions = {
 
         if (params.node.data['totalsRow']) {
             return {
-                background: '#999',
+                background: '#333',
                 color: 'white',
+                fontSize: '1.5rem',
+
+            }
+        } else {
+            return {
                 fontSize: '1.2rem',
-                height: '68px'
+                color: 'rgba(200,200,200,1)'
             }
         }
     },

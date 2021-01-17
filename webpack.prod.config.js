@@ -5,7 +5,7 @@ module.exports = {
   mode: 'production',
   entry: ["./src/utils.js", "./src/index.js"],
   output: {
-    path: path.resolve(__dirname, "diary"),
+    path: path.resolve(__dirname, "prod-build"),
     filename: "bundle.prod.js",
     publicPath: '/diary/'
   },

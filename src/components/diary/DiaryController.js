@@ -16,8 +16,7 @@ const DiaryController = () => {
     }, []);
 
     return (<>{state.diaryResults.length ? <DiaryGrid nutrientTotals={state.diaryResults}></DiaryGrid> :
-        <p className="diary-loading">Loading, please wait...</p>}</>);
+        <p className="diary-loading">No food added just yet</p>}</>);
 }
 
 export default DiaryController;
-
