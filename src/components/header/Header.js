@@ -13,12 +13,17 @@ const Header = (props) => {
 
     const animateLoad = setTimeout(() => {
       top.classList.add(ANIMATE_CLASS);
+
     }, 0);
 
+    if (state.isAuthenticated) {
+      top.classList.add('loggedin-menu');
+    }
+    console.log("use effect ran for state change >>", state);
     return () => {
       clearTimeout(animateLoad);
     };
-  }, [state]);
+  }, [state.isAuthenticated]);
 
   return (
     <>

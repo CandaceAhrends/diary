@@ -8,7 +8,9 @@
   margin: 0 auto;
   margin-top: -20px;
   background: rgba(0, 0, 0, 0.9);
-  box-shadow: 1px 15px 61px #333;
+  &:not(.loggedin) {
+    box-shadow: 1px 15px 61px #333;
+  }
 
   label {
     height: 0.5rem;
@@ -107,7 +109,6 @@
       display: flex;
       align-content: flex-end;
       justify-content: center;
-      border: solid white;
       background: black;
       height: 100px;
       width: 100%;
@@ -193,6 +194,7 @@
     @include clickable;
   }
 }
+
 @media screen and (min-width: 800px) {
   .search-container {
     label {

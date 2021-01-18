@@ -15,6 +15,9 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import { getcurrentDate } from '../../utils';
+import saveActivity from '../../api/saveActivity';
+import { take } from 'rxjs/operators';
 
 import { useHistory, useLocation } from "react-router-dom";
 import './activity.scss';
@@ -31,10 +34,10 @@ const useStyles = makeStyles((theme) => ({
     },
     table: {
         width: '80vw',
-        
+
     },
     header: {
-         
+
     },
     button: {
         color: 'white',
@@ -50,11 +53,13 @@ function createData(name, calories, fat, carbs, protein) {
 const rows = [
     createData('better cognitive function', 0),
     createData('jogging', 200)
-    
+
 ];
 const Activity = () => {
     const history = useHistory();
     let location = useLocation();
+    const [state, dispatch] = useContext(StoreContext);
+    const [activityFormData, setActivityFormData] = useState({ action: '', cal: 0 });
 
     const classes = useStyles();
     const [loaded, setLoaded] = useState(false);
@@ -63,12 +68,33 @@ const Activity = () => {
         setLoaded(true);
 
     }, []);
+    const buildRequest = () => {
 
-    const handleSubmit = () => {
+        return {
+
+            userId: state.user,
+            date: getcurrentDate(),
+            ...activityFormData,
+            cal: parseInt(activityFormData.cal),
+            qty: 1,
+            id: Math.floor(Math.random() * 1000)
+
+        }
+
+    }
+
+    const handleSubmit = (evt) => {
+        evt.preventDefault();
+        const activity = buildRequest();
+        saveActivity(activity).pipe(take(1)).subscribe(res => {
+            console.log("subscription return ", res);
+        });
 
 
     };
     const handleChange = (evt) => {
+
+        setActivityFormData({ ...activityFormData, [evt.target.name]: evt.target.value });
 
     };
     const activityClasses = classNames(
@@ -80,7 +106,7 @@ const Activity = () => {
     );
     const formClasses = classNames(
         {
-           
+
             "form-wrapper": loaded,
             "initial-state": true
         }
@@ -88,25 +114,26 @@ const Activity = () => {
     return (
         <main className="activity-wraper">
             <div className={formClasses}>
-                <form className={classes.root} noValidate autoComplete="off">
+                <form className={classes.root} onSubmit={handleSubmit} onChange={handleChange} noValidate autoComplete="off">
                     <Typography className={classes.header} variant="h5" gutterBottom>
                         Activity Tracking
                 </Typography>
 
                     <TextField
-                         
+
                         label="Record an activity, mood, or ailment"
                         multiline
-                        rows={5}
+                        rows={2}
+                        name="action"
                         placeholder="Enter something to keep track of"
                         variant="outlined"
                     />
                     <TextField
                         label="Calories Burned"
                         id="outlined-margin-normal"
-
+                        name="cal"
                         className={classes.textField}
-
+                        type="number"
 
                         variant="outlined"
                     />
@@ -124,7 +151,7 @@ const Activity = () => {
                             variant="contained"
 
                             color="primary"
-
+                            type="submit"
                             className={classes.button}
                             startIcon={<SaveIcon />}
                         >

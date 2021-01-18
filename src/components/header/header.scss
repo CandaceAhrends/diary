@@ -61,6 +61,16 @@
     height: 90vh;
   }
 }
+.loggedin-menu {
+  &::after {
+    content: " ";
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-image: none;
+  }
+}
 .usda {
   font-size: 0.8rem;
   color: white;

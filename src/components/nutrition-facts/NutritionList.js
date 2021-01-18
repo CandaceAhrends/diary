@@ -25,6 +25,7 @@ export default function NutritionList({ data, useFatSecret }) {
   const [state, dispatch] = useContext(StoreContext);
   const [expandables, setExpandables] = useState(null);
   const [foodList, setFoodList] = useState(null);
+  const [style, setStyle] = useState({ height: '100px' });
 
   useEffect(() => {
     const expandables = data.reduce((expandables, foodItem) => {
@@ -39,6 +40,8 @@ export default function NutritionList({ data, useFatSecret }) {
       }
       return expandables;
     }, {});
+
+
     setExpandables(expandables);
     const foodList = data.map(food => {
       return {
@@ -50,6 +53,25 @@ export default function NutritionList({ data, useFatSecret }) {
     setFoodList(foodList);
 
   }, data);
+
+
+  const setNutritionListWidth = () => {
+    const heightSyle = {
+      height: `${window.innerHeight - 300}px`
+    }
+    setStyle(heightSyle);
+  }
+  useEffect(() => {
+
+    window.onresize = evt => {
+
+      setNutritionListWidth();
+    }
+    setNutritionListWidth();
+
+
+  }, []);
+
 
   const toggleExpanded = (expandedItem) => {
     expandedItem.expanded = !expandedItem.expanded;
@@ -138,7 +160,7 @@ export default function NutritionList({ data, useFatSecret }) {
   return (
     <>
 
-      {expandables ? <List className="nutrition-list">
+      {expandables ? <List style={style} className="nutrition-list">
         {foodList.map((food, idx) => {
           return (
             <>

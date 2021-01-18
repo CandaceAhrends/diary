@@ -234,6 +234,70 @@ ul::-webkit-scrollbar-thumb {
   border-radius: 6px;
   border: 3px solid orange;
 }
+
+@media screen and (min-width: 400px) {
+  .calorie {
+    &-details {
+      .add-to-diary {
+        width: 22.8rem;
+        display: inline-block;
+      }
+      &-select-wrapper {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        z-index: 999;
+        ul {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 21rem;
+          z-index: 999;
+          background: black;
+          display: none;
+          padding-bottom: 50px;
+
+          li {
+            padding: 0.5rem 1rem;
+
+            &:hover {
+              background: grey;
+            }
+          }
+          &.show {
+            display: block;
+          }
+        }
+
+        &-arrow {
+          width: 36px;
+          height: 36px;
+          margin: -7px !important;
+          display: inline-block;
+          background-image: url("./arrow_drop_down_48px.svg");
+        }
+      }
+      &-portion-select {
+        width: 21rem;
+        border: solid 0.5px orange;
+        display: flex;
+        justify-content: space-between;
+        background: black;
+        color: orange;
+        height: 1.6rem;
+        margin-top: 0.3rem;
+        cursor: pointer;
+        padding: 0.5rem 1rem 1rem 0.5rem;
+        appearance: none;
+        -webkit-appearance: none;
+        span {
+          font-size: 1.2em !important;
+        }
+      }
+    }
+  }
+}
 @media screen and (min-width: 800px) {
   .search-container {
     .MuiIconButton-label {

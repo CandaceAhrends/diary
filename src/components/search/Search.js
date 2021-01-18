@@ -61,6 +61,8 @@ export default function Search({ url, search }) {
   const classes = useStyles();
 
 
+
+
   useEffect(() => {
 
     console.log(searchQueryEl)
@@ -70,9 +72,6 @@ export default function Search({ url, search }) {
     }
   }, searchQueryEl);
 
-  const handleFoodDBChange = ele => {
-    setUseFatSecret(!useFatSecret);
-  }
 
   const handleChange = ele => setShowError(false);
 
@@ -142,9 +141,13 @@ export default function Search({ url, search }) {
     'no-selection': true,
     'hide': state.searchQuery.length && state.isAuthenticated
   });
+  const searchContainerClasses = classNames({
+    'search-container': true,
+    'loggedin': state.isAuthenticated
+  })
 
   return (
-    <div className="search-container">
+    <div className={searchContainerClasses}>
 
       <label className={errorClasses} htmlFor="search" onClick={() => setShowError(false)}>{errorMessage}</label>
 
@@ -196,6 +199,7 @@ export default function Search({ url, search }) {
             </>
           ) : null
         }
+
         < div className="loader"> <PacmanLoader
 
           size={100}

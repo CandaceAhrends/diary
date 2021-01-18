@@ -106,7 +106,7 @@ const App = () => {
       <ThemeProvider theme={theme}>
         <Header></Header>
 
-        <main className={location.pathname.slice(1)}>
+        <main className={`main-${location.pathname.slice(1)}`}>
           <Switch>
             <Route path="/login">
               <Login></Login>
